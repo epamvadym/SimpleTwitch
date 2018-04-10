@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,11 +24,11 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
 
         recyclerView.setAdapter(liveStreamsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        getViewModel().streamList
-                .observe(this, streams -> {
-                    liveStreamsAdapter.setLiveStreamsItems(streams);
-                    liveStreamsAdapter.notifyDataSetChanged();
-                });
+//        getViewModel().streamList
+//                .observe(this, streams -> {
+////                    liveStreamsAdapter.setLiveStreamsItems(streams);
+////                    liveStreamsAdapter.notifyDataSetChanged();
+//                });
     }
 
     @Override

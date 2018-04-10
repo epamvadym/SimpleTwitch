@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.vadym_horiainov.simpletwitch.mvvm.LiveStreamsItemVM" />
+            type="com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsItemVM" />
     </data>
 
 
@@ -14,11 +15,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_channel"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:text="channel" />
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_channel_video_banner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@null"
+                app:imageUrl="@{viewModel.videoBannerUrl}"
+                app:layout_constraintBottom_toTopOf="@+id/iv_channel_logo"
+                app:layout_constraintDimensionRatio="3:2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@android:color/darker_gray" />
+
+            <ImageView
+                android:id="@+id/iv_channel_logo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"
+                app:imageUrl="@{viewModel.logoUrl}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@android:color/holo_blue_bright" />
+
+            <TextView
+                android:id="@+id/tv_channel_display_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{viewModel.displayName}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/iv_channel_logo"
+                app:layout_constraintTop_toTopOf="@+id/iv_channel_logo"
+                tools:text="Kolento" />
+
+            <TextView
+                android:id="@+id/tv_channel_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{viewModel.game}"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_channel_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/iv_channel_logo"
+                tools:text="Hearthstone" />
+
+        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.v7.widget.CardView>

@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

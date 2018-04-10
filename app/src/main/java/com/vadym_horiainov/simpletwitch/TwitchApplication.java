@@ -1,28 +1,32 @@
 package com.vadym_horiainov.simpletwitch;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.vadym_horiainov.simpletwitch.di.AppComponent;
-import com.vadym_horiainov.simpletwitch.di.AppModule;
 import com.vadym_horiainov.simpletwitch.di.DaggerAppComponent;
 
-public class TwitchApplication extends Application {
-    private static AppComponent appComponent;
+import javax.inject.Inject;
 
-    public static AppComponent getAppComponent() {
-        return appComponent;
-    }
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+
+public class TwitchApplication extends Application implements HasActivityInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        buildAppComponent();
+        DaggerAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this);
     }
 
-    private void buildAppComponent() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return activityDispatchingAndroidInjector;
     }
 }

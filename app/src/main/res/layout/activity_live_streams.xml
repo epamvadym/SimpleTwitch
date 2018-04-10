@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.vadym_horiainov.simpletwitch.mvvm.LiveStreamsActivityVM" />
+            type="com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsActivityVM" />
     </data>
 
 
