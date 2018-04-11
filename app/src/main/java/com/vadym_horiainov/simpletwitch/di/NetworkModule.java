@@ -25,7 +25,7 @@ public class NetworkModule {
     @Provides
     public Retrofit provideRetrofit(Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl("https://StreamApi.twitch.tv/kraken/")
+                .baseUrl("https://api.twitch.tv/kraken/")
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .build();

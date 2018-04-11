@@ -4,20 +4,19 @@ import android.databinding.ObservableField;
 
 public class LiveStreamsItemVM {
 
-    public final ObservableField<String> videoBannerUrl;
+    public final ObservableField<String> videoBannerUrl = new ObservableField<>();
 
-    public final ObservableField<String> logoUrl;
+    public final ObservableField<String> logoUrl = new ObservableField<>();
 
-    public final ObservableField<String> displayName;
+    public final ObservableField<String> displayName = new ObservableField<>();
 
-    public final ObservableField<String> game;
+    public final ObservableField<String> game = new ObservableField<>();
 
-
-    public LiveStreamsItemVM(ObservableField<String> videoBannerUrl, ObservableField<String> logoUrl,
-                             ObservableField<String> displayName, ObservableField<String> game) {
-        this.videoBannerUrl = videoBannerUrl;
-        this.logoUrl = logoUrl;
-        this.displayName = displayName;
-        this.game = game;
+    public LiveStreamsItemVM(String videoBannerUrl, String logoUrl,
+                             String displayName, String game) {
+        this.videoBannerUrl.set(videoBannerUrl);
+        this.logoUrl.set(logoUrl);
+        this.displayName.set(displayName);
+        this.game.set(game);
     }
 }

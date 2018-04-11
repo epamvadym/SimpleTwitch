@@ -1,32 +1,31 @@
 package com.vadym_horiainov.simpletwitch.mvvm.base.activities;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.databinding.BaseObservable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-/**
- * Created by alex on 19.01.16.
- */
 public abstract class ActivityViewModel<A extends AppCompatActivity>
-        extends BaseObservable {
+        extends ViewModel {
 
-    protected A activity;
+    protected static final String TAG = "ActivityViewModel";
 
-    public ActivityViewModel(A activity) {
-        this.activity = activity;
-    }
-
-    public A getActivity() {
-        return activity;
-    }
-
-    public void finish() {
-        activity.finish();
-    }
+//    protected A activity;
+//
+//    public ActivityViewModel(A activity) {
+//        this.activity = activity;
+//    }
+//
+//    public A getActivity() {
+//        return activity;
+//    }
+//
+//    public void finish() {
+//        activity.finish();
+//    }
 
     /**
      * Activity lifecycle

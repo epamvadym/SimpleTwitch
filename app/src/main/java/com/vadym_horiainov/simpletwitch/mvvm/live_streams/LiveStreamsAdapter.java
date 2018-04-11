@@ -13,11 +13,7 @@ import java.util.List;
 
 public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.ViewHolder> {
 
-    private List<LiveStreamsItemVM> liveStreamsItems = new ArrayList<>();
-
-    public void setLiveStreamsItems(List<LiveStreamsItemVM> liveStreamsItems) {
-        this.liveStreamsItems = liveStreamsItems;
-    }
+    private final List<LiveStreamsItemVM> liveStreamsItems = new ArrayList<>();
 
     @NonNull
     @Override
@@ -37,12 +33,22 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
         return liveStreamsItems.size();
     }
 
+    public void addItems(List<LiveStreamsItemVM> items) {
+        liveStreamsItems.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        liveStreamsItems.clear();
+    }
+
+
     class ViewHolder extends BaseViewHolder {
         private final ItemLiveStreamsBinding binding;
 
-        ViewHolder(ItemLiveStreamsBinding itemLiveStreamsBinding) {
-            super(itemLiveStreamsBinding.getRoot());
-            this.binding = itemLiveStreamsBinding;
+        ViewHolder(ItemLiveStreamsBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         @Override

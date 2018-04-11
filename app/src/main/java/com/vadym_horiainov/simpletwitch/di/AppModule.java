@@ -10,15 +10,9 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private TwitchApplication appContext;
-
-    public AppModule(TwitchApplication twitchApplication) {
-        appContext = twitchApplication;
-    }
-
     @Singleton
     @Provides
-    TwitchApplication provideContext() {
+    TwitchApplication provideContext(TwitchApplication appContext) {
         return appContext;
     }
 
