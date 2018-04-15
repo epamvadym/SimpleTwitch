@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm.base.activities;
+package com.vadym_horiainov.simpletwitch.mvvm.base;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import dagger.android.AndroidInjection;
+
 public abstract class BindingActivity<B extends ViewDataBinding, VM extends ActivityViewModel>
         extends AppCompatActivity {
 
@@ -20,20 +22,21 @@ public abstract class BindingActivity<B extends ViewDataBinding, VM extends Acti
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         bind();
     }
 
     public void bind() {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
-        this.viewModel = viewModel == null ? onCreate() : viewModel;
+        this.viewModel = viewModel == null ? createViewModel() : viewModel;
         binding.setVariable(getVariable(), viewModel);
         binding.executePendingBindings();
     }
 
     public void resetViewModel() {
         viewModel = null;
-        viewModel = onCreate();
+        viewModel = createViewModel();
         getBinding().setVariable(getVariable(), viewModel);
     }
 
@@ -139,7 +142,7 @@ public abstract class BindingActivity<B extends ViewDataBinding, VM extends Acti
         viewModel.onWindowFocusChanged(hasFocus);
     }
 
-    public abstract VM onCreate();
+    public abstract VM createViewModel();
 
     public VM getViewModel() {
         return viewModel;

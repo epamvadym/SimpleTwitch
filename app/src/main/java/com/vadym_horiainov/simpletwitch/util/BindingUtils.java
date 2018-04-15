@@ -1,10 +1,14 @@
 package com.vadym_horiainov.simpletwitch.util;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsAdapter;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsItemVM;
+
+import java.util.List;
 
 public final class BindingUtils {
 
@@ -13,7 +17,16 @@ public final class BindingUtils {
 
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView imageView, String url) {
-        Context context = imageView.getContext();
-        Glide.with(context).load(url).into(imageView);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .into(imageView);
+    }
+
+    @BindingAdapter({"adapter"})
+    public static void addLiveStreamsItems(RecyclerView recyclerView, List<LiveStreamsItemVM> liveStreamsItemViewModels) {
+        LiveStreamsAdapter adapter = (LiveStreamsAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.addItems(liveStreamsItemViewModels);
+        }
     }
 }

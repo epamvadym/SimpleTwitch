@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm.base.fragments;
+package com.vadym_horiainov.simpletwitch.mvvm.base;
 
 import android.app.Activity;
 import android.content.Intent;

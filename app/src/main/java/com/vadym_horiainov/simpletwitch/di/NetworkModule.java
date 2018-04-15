@@ -23,9 +23,9 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    public Retrofit provideRetrofit(Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
+    public Retrofit provideRetrofit(@ApiUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl("https://api.twitch.tv/kraken/")
+                .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .build();
@@ -41,5 +41,12 @@ public class NetworkModule {
     @Provides
     public CallAdapter.Factory provideCallAdapterFactory() {
         return RxJava2CallAdapterFactory.create();
+    }
+
+    @Singleton
+    @Provides
+    @ApiUrl
+    public String provideApiUrl() {
+        return "https://api.twitch.tv/";
     }
 }

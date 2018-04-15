@@ -10,8 +10,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {
-            LiveStreamsActivityModule.class,
-            NetworkModule.class})
+            LiveStreamsActivityModule.class})
     abstract LiveStreamsActivity bindLiveStreamsActivity();
 
 }

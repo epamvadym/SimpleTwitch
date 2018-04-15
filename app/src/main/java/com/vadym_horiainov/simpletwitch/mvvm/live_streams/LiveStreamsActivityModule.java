@@ -3,7 +3,7 @@ package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
+import com.vadym_horiainov.simpletwitch.data.StreamRepository;
 import com.vadym_horiainov.simpletwitch.mvvm.ViewModelProviderFactory;
 
 import dagger.Module;
@@ -18,8 +18,8 @@ public class LiveStreamsActivityModule {
     }
 
     @Provides
-    LiveStreamsActivityVM provideLiveStreamsActivityViewModel(StreamApi streamApi) {
-        return new LiveStreamsActivityVM(streamApi);
+    LiveStreamsActivityVM provideLiveStreamsActivityViewModel(StreamRepository streamRepository) {
+        return new LiveStreamsActivityVM(streamRepository);
     }
 
     @Provides

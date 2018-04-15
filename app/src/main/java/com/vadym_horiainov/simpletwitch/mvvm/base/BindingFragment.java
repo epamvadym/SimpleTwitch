@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm.base.fragments;
+package com.vadym_horiainov.simpletwitch.mvvm.base;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
