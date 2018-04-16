@@ -1,5 +1,6 @@
-package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
+import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -18,8 +19,8 @@ public class LiveStreamsActivityModule {
     }
 
     @Provides
-    LiveStreamsActivityVM provideLiveStreamsActivityViewModel(StreamRepository streamRepository) {
-        return new LiveStreamsActivityVM(streamRepository);
+    LiveStreamsActivityVM provideLiveStreamsActivityViewModel(Application appContext, StreamRepository streamRepository) {
+        return new LiveStreamsActivityVM(appContext, streamRepository);
     }
 
     @Provides

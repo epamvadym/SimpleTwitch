@@ -30,8 +30,8 @@ public class StreamRepository {
                 .map(LiveStreamsModel::getStreams);
     }
 
-    public Observable<String> getAdmiral() {
-        return streamApi.getChannelToken("0s4cg0hmn8rq4rrv4ex8rtkexoape7", "dotastarladder_en")
+    public Observable<String> getVideoUrl(final String channelName) {
+        return streamApi.getChannelToken("0s4cg0hmn8rq4rrv4ex8rtkexoape7", channelName)
                 .subscribeOn(Schedulers.io())
                 .map(jsonObject -> {
                     String token = jsonObject.get("token").getAsString();
@@ -42,7 +42,7 @@ public class StreamRepository {
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     StreamApi api = retrofit.create(StreamApi.class);
-                    ResponseBody responseBody = api.getChannelPlaylist("dotastarladder_en", "twitchweb", sig, token,
+                    ResponseBody responseBody = api.getChannelPlaylist(channelName, "twitchweb", sig, token,
                             "any", 1, true, true).execute().body();
 
                     Scanner scanner = new Scanner(new InputStreamReader(responseBody.byteStream()));

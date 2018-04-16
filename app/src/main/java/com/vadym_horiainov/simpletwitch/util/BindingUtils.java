@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsAdapter;
-import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsItemVM;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsAdapter;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsItemVM;
 
 import java.util.List;
 

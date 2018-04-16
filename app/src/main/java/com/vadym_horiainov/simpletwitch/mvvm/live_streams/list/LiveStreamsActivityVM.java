@@ -1,6 +1,8 @@
-package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
+import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.util.Log;
@@ -8,22 +10,26 @@ import android.util.Log;
 import com.vadym_horiainov.simpletwitch.data.StreamRepository;
 import com.vadym_horiainov.simpletwitch.models.Stream;
 import com.vadym_horiainov.simpletwitch.mvvm.base.ActivityViewModel;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class LiveStreamsActivityVM extends ActivityViewModel {
+public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStreamsItemVM.LiveStreamsItemViewModelListener {
 
     private final ObservableList<LiveStreamsItemVM> liveStreamsItemViewModels;
-    private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemLiveData;
+    private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemsLiveData;
+    private final MutableLiveData<String> chosenStreamNameLiveData;
     private final StreamRepository streamRepository;
 
-    public LiveStreamsActivityVM(StreamRepository streamRepository) {
+    public LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository) {
+        super(appContext);
         this.streamRepository = streamRepository;
         liveStreamsItemViewModels = new ObservableArrayList<>();
-        liveStreamsItemLiveData = new MutableLiveData<>();
+        liveStreamsItemsLiveData = new MutableLiveData<>();
+        chosenStreamNameLiveData = new MutableLiveData<>();
         fetchData();
     }
 
@@ -32,7 +38,7 @@ public class LiveStreamsActivityVM extends ActivityViewModel {
                 streamRepository.getLiveStreams()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(streams -> {
-                                    liveStreamsItemLiveData.setValue(getViewModelList(streams));
+                                    liveStreamsItemsLiveData.setValue(getViewModelList(streams));
                                 },
                                 throwable -> Log.e(TAG, "fetchData: ERROR", throwable))
         );
@@ -42,8 +48,12 @@ public class LiveStreamsActivityVM extends ActivityViewModel {
         return liveStreamsItemViewModels;
     }
 
-    public MutableLiveData<List<LiveStreamsItemVM>> getLiveStreamsItemLiveData() {
-        return liveStreamsItemLiveData;
+    public MutableLiveData<List<LiveStreamsItemVM>> getLiveStreamsItemsLiveData() {
+        return liveStreamsItemsLiveData;
+    }
+
+    public MutableLiveData<String> getChosenStreamNameLiveData() {
+        return chosenStreamNameLiveData;
     }
 
     public void addLiveStreamItemsToList(List<LiveStreamsItemVM> liveStreamsItems) {
@@ -57,8 +67,23 @@ public class LiveStreamsActivityVM extends ActivityViewModel {
             liveStreamsItemViewModels.add(new LiveStreamsItemVM(
                     stream.getPreview().getMedium(), stream.getChannel().getLogo(),
                     stream.getChannel().getDisplayName(), stream.getChannel().getGame(),
-                    stream.getChannel().getName()));
+                    stream.getChannel().getName(), this));
         }
         return liveStreamsItemViewModels;
+    }
+
+    @Override
+    public void onItemClick(String channelName) {
+        getCompositeDisposable().add(
+                streamRepository.getVideoUrl(channelName)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::openPlayStreamActivity,
+                                throwable -> Log.e(TAG, "onItemClick: ", throwable))
+        );
+    }
+
+    private void openPlayStreamActivity(String streamUrl) {
+        Intent intent = PlayStreamActivity.getPlayStreamActivityIntent(getApplication(), streamUrl);
+        getApplication().startActivity(intent);
     }
 }

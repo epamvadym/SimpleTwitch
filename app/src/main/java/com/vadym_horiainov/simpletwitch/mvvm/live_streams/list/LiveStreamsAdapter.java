@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemLiveStreamsBinding itemLiveStreamsBinding = ItemLiveStreamsBinding
-                        .inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(itemLiveStreamsBinding);
     }
 

@@ -1,7 +1,7 @@
 package com.vadym_horiainov.simpletwitch.di;
 
-import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsActivity;
-import com.vadym_horiainov.simpletwitch.mvvm.live_streams.LiveStreamsActivityModule;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivity;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivityModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

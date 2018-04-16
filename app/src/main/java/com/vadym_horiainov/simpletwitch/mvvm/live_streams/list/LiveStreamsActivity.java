@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm.live_streams;
+package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -37,7 +37,7 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
     }
 
     private void subscribeToLiveData() {
-        getViewModel().getLiveStreamsItemLiveData().observe(this,
+        getViewModel().getLiveStreamsItemsLiveData().observe(this,
                 liveStreamsItemVMS -> getViewModel().addLiveStreamItemsToList(liveStreamsItemVMS));
     }
 

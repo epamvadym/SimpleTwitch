@@ -1,18 +1,24 @@
 package com.vadym_horiainov.simpletwitch.mvvm.base;
 
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class ActivityViewModel extends ViewModel {
+public abstract class ActivityViewModel extends AndroidViewModel {
     protected static final String TAG = "ActivityViewModel";
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public ActivityViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     protected CompositeDisposable getCompositeDisposable() {
         return compositeDisposable;
@@ -22,7 +28,6 @@ public abstract class ActivityViewModel extends ViewModel {
     protected void onCleared() {
         compositeDisposable.dispose();
     }
-
 
 
     /**

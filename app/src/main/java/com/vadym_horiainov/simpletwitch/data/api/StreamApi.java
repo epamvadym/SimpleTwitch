@@ -21,7 +21,7 @@ public interface StreamApi {
     @GET("api/channels/{channel}/access_token")
     Observable<JsonObject> getChannelToken(@Header("Client-ID") String client, @Path("channel") String channel);
 
-    @Streaming
+    @Streaming // is it needed?
     @GET("api/channel/hls/{channel}.m3u8")
     Call<ResponseBody> getChannelPlaylist(@Path("channel") String channel,
                                           @Query("player") String player,
