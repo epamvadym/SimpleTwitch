@@ -1,5 +1,6 @@
 package com.vadym_horiainov.simpletwitch.di;
 
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivity;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivity;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivityModule;
 
@@ -13,4 +14,6 @@ public abstract class ActivityBuilder {
             LiveStreamsActivityModule.class})
     abstract LiveStreamsActivity bindLiveStreamsActivity();
 
+    @ContributesAndroidInjector(modules = {})
+    abstract PlayStreamActivity bindPlayStreamActivity();
 }

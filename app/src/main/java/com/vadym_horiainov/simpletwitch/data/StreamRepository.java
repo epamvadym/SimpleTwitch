@@ -1,5 +1,6 @@
 package com.vadym_horiainov.simpletwitch.data;
 
+import com.vadym_horiainov.simpletwitch.data.api.QueryParameters;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
 import com.vadym_horiainov.simpletwitch.models.Stream;
@@ -11,15 +12,15 @@ import java.util.Scanner;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StreamRepository {
 
     private final StreamApi streamApi;
+    private final StreamApi usherApi;
 
-    public StreamRepository(StreamApi streamApi) {
+    public StreamRepository(StreamApi streamApi, StreamApi usherApi) {
         this.streamApi = streamApi;
+        this.usherApi = usherApi;
     }
 
     public Observable<List<Stream>> getLiveStreams() {
@@ -37,13 +38,18 @@ public class StreamRepository {
                     String token = jsonObject.get("token").getAsString();
                     String sig = jsonObject.get("sig").getAsString();
 
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://usher.twitch.tv/")
-                            .addConverterFactory(GsonConverterFactory.create())
+                    QueryParameters parameters = new QueryParameters.Builder()
+                            .add("player", "twitchweb")
+                            .add("sig", jsonObject.get("token").getAsString())
+                            .add("token", jsonObject.get("sig").getAsString())
+                            .add("type", "any")
+                            .add("p", 1)
+                            .add("allow_audio_only", true)
+                            .add("allow_source", true)
                             .build();
-                    StreamApi api = retrofit.create(StreamApi.class);
-                    ResponseBody responseBody = api.getChannelPlaylist(channelName, "twitchweb", sig, token,
-                            "any", 1, true, true).execute().body();
+
+                    ResponseBody responseBody
+                            = usherApi.getChannelPlaylist(channelName, parameters.getMap()).execute().body();
 
                     Scanner scanner = new Scanner(new InputStreamReader(responseBody.byteStream()));
                     String result = "";

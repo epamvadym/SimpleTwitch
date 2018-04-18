@@ -14,7 +14,7 @@ public class LiveStreamsItemVM {
 
     public final ObservableField<String> name = new ObservableField<>();
 
-    public final LiveStreamsItemViewModelListener listener;
+    private final LiveStreamsItemViewModelListener listener;
 
     public LiveStreamsItemVM(String videoBannerUrl, String logoUrl,
                              String displayName, String game,

@@ -1,6 +1,8 @@
 package com.vadym_horiainov.simpletwitch.di;
 
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
+import com.vadym_horiainov.simpletwitch.di.qualifires.ApiUrl;
+import com.vadym_horiainov.simpletwitch.di.qualifires.UsherUrl;
 
 import javax.inject.Singleton;
 
@@ -17,17 +19,36 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    public StreamApi provideStreamApi(Retrofit retrofit) {
+    @ApiUrl
+    public StreamApi provideStreamApi(@ApiUrl Retrofit retrofit) {
         return retrofit.create(StreamApi.class);
     }
 
     @Singleton
     @Provides
+    @UsherUrl
+    public StreamApi provideUsherApi(@UsherUrl Retrofit retrofit) {
+        return retrofit.create(StreamApi.class);
+    }
+
+    @Singleton
+    @Provides
+    @ApiUrl
     public Retrofit provideRetrofit(@ApiUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    @UsherUrl
+    public Retrofit provideUsherRetrofit(@UsherUrl String baseUrl, Converter.Factory converterFactory) {
+        return new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(converterFactory)
                 .build();
     }
 
@@ -48,5 +69,12 @@ public class NetworkModule {
     @ApiUrl
     public String provideApiUrl() {
         return "https://api.twitch.tv/";
+    }
+
+    @Singleton
+    @Provides
+    @UsherUrl
+    public String provideUsherUrl() {
+        return "http://usher.twitch.tv/";
     }
 }

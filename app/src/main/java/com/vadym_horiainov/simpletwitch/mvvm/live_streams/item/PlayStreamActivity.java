@@ -26,6 +26,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
 
         String streamUrl = getIntent().getStringExtra(STREAM_URL_EXTRA);
         binding.vvStream.setVideoPath(streamUrl);
+        binding.vvStream.start();
     }
 
     @Override
