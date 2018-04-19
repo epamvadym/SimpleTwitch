@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.vadym_horiainov.simpletwitch.BR;
 import com.vadym_horiainov.simpletwitch.R;
@@ -34,6 +35,12 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
     private void setUp() {
         binding.rvLiveStreams.setLayoutManager(linearLayoutManager);
         binding.rvLiveStreams.setAdapter(liveStreamsAdapter);
+        binding.rvLiveStreams.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                getViewModel().listScrolled(linearLayoutManager.findLastVisibleItemPosition());
+            }
+        });
     }
 
     private void subscribeToLiveData() {

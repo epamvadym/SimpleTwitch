@@ -5,25 +5,29 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.util.Log;
 
 import com.vadym_horiainov.simpletwitch.data.StreamRepository;
 import com.vadym_horiainov.simpletwitch.models.Stream;
 import com.vadym_horiainov.simpletwitch.mvvm.base.ActivityViewModel;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivity;
+import com.vadym_horiainov.simpletwitch.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStreamsItemVM.LiveStreamsItemViewModelListener {
-
+public class LiveStreamsActivityVM extends ActivityViewModel
+        implements LiveStreamsItemVM.LiveStreamsItemViewModelListener {
+    private static final int PAGE_LIMIT = 10;
+    private static final int LOAD_THRESHOLD = 6;
     private final ObservableList<LiveStreamsItemVM> liveStreamsItemViewModels;
     private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemsLiveData;
     private final StreamRepository streamRepository;
+    private int offset;
+    private boolean isLoading;
 
-    public LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository) {
+    LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository) {
         super(appContext);
         this.streamRepository = streamRepository;
         liveStreamsItemViewModels = new ObservableArrayList<>();
@@ -33,10 +37,15 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
 
     private void fetchData() {
         getCompositeDisposable().add(
-                streamRepository.getLiveStreams()
+                streamRepository.getLiveStreams(PAGE_LIMIT, offset)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                streams -> liveStreamsItemsLiveData.setValue(getViewModelList(streams)),
+                                streams -> {
+                                    liveStreamsItemsLiveData.setValue(getViewModelList(streams));
+                                    offset += PAGE_LIMIT;
+                                    isLoading = false;
+                                    Log.d(TAG, "fetchData: offset - " + offset);
+                                },
                                 throwable -> Log.e(TAG, "fetchData: ERROR", throwable)
                         )
         );
@@ -55,13 +64,10 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
         liveStreamsItemViewModels.addAll(liveStreamsItems);
     }
 
-    public List<LiveStreamsItemVM> getViewModelList(List<Stream> streams) {
+    private List<LiveStreamsItemVM> getViewModelList(List<Stream> streams) {
         List<LiveStreamsItemVM> liveStreamsItemViewModels = new ArrayList<>();
         for (Stream stream : streams) {
-            liveStreamsItemViewModels.add(new LiveStreamsItemVM(
-                    stream.getPreview().getMedium(), stream.getChannel().getLogo(),
-                    stream.getChannel().getDisplayName(), stream.getChannel().getGame(),
-                    stream.getChannel().getName(), this));
+            liveStreamsItemViewModels.add(new LiveStreamsItemVM(stream, this));
         }
         return liveStreamsItemViewModels;
     }
@@ -74,5 +80,12 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
     private void openPlayStreamActivity(String channelName) {
         Intent intent = PlayStreamActivity.getPlayStreamActivityIntent(getApplication(), channelName);
         getApplication().startActivity(intent);
+    }
+
+    public void listScrolled(int lastVisibleItemPosition) {
+        if (!isLoading && lastVisibleItemPosition > offset - LOAD_THRESHOLD) {
+            isLoading = true;
+            fetchData();
+        }
     }
 }

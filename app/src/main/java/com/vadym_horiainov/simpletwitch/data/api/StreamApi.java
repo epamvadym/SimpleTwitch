@@ -19,13 +19,13 @@ public interface StreamApi {
 
     @GET("kraken/streams")
     Observable<LiveStreamsModel> getLiveStreamsModel(@Header("Client-ID") String client,
-                                                     @Query("limit") int limit);
+                                                     @Query("limit") int limit,
+                                                     @Query("offset") int offset);
 
     @GET("api/channels/{channel}/access_token")
     Observable<JsonObject> getChannelToken(@Header("Client-ID") String client, @Path("channel") String channel);
 
     @UsherUrl
-//    @Streaming // is it needed?
     @GET("api/channel/hls/{channel}.m3u8")
     Call<ResponseBody> getChannelPlaylist(@Path("channel") String channel, @QueryMap Map<String, Object> params);
 }

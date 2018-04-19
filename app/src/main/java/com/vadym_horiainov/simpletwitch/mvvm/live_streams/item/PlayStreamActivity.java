@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.VideoView;
 
 import com.vadym_horiainov.simpletwitch.BR;
 import com.vadym_horiainov.simpletwitch.R;
@@ -21,6 +22,8 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
 
     private ActivityPlayStreamBinding binding;
 
+    private VideoView vvStream;
+
     public static Intent getPlayStreamActivityIntent(Context packageContext, String streamUrl) {
         Intent intent = new Intent(packageContext, PlayStreamActivity.class);
         intent.putExtra(CHANNEL_NAME_EXTRA, streamUrl);
@@ -32,15 +35,24 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
         super.onCreate(savedInstanceState);
         binding = getBinding();
         getViewModel().playStream(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
+        setUp();
         subscribeToLiveData();
+    }
+
+    private void setUp() {
+        vvStream = binding.vvStream;
     }
 
     private void subscribeToLiveData() {
         getViewModel().getVideoUrlLiveData().observe(this,
-                videoPath -> {
-                    binding.vvStream.setVideoPath(videoPath);
-                    binding.vvStream.start();
-                });
+                this::playVideo);
+    }
+
+    private void playVideo(String videoPath) {
+        if (!vvStream.isPlaying()) {
+            vvStream.setVideoPath(videoPath);
+            vvStream.start();
+        }
     }
 
     @Override

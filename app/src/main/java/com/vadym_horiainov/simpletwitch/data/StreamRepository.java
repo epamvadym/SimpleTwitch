@@ -1,5 +1,8 @@
 package com.vadym_horiainov.simpletwitch.data;
 
+import android.support.annotation.NonNull;
+
+import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.data.api.QueryParameters;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
@@ -23,37 +26,43 @@ public class StreamRepository {
         this.usherApi = usherApi;
     }
 
-    public Observable<List<Stream>> getLiveStreams() {
-        return streamApi.getLiveStreamsModel("0s4cg0hmn8rq4rrv4ex8rtkexoape7", 10)
+    public Observable<List<Stream>> getLiveStreams(final int limit, final int offset) {
+        return streamApi.getLiveStreamsModel(BuildConfig.CLIENT_ID, limit, offset)
                 .subscribeOn(Schedulers.io())
-                .doOnNext(liveStreamsModel -> {
-                })
+//                .doOnNext(liveStreamsModel -> {
+//                })
                 .map(LiveStreamsModel::getStreams);
     }
 
     public Observable<StreamPlaylist> getStreamPlayList(final String channelName) {
-        return streamApi.getChannelToken("0s4cg0hmn8rq4rrv4ex8rtkexoape7", channelName)
+        return streamApi.getChannelToken(BuildConfig.CLIENT_ID, channelName)
                 .subscribeOn(Schedulers.io())
                 .map(jsonObject -> {
                     QueryParameters parameters = new QueryParameters.Builder()
                             .add("player", "twitchweb")
                             .add("token", jsonObject.get("token").getAsString())
                             .add("sig", jsonObject.get("sig").getAsString())
-                            .add("type", "any")
-                            .add("p", 1)
                             .add("allow_audio_only", true)
                             .add("allow_source", true)
+                            .add("type", "any")
+                            .add("p", 1)
                             .build();
 
                     ResponseBody responseBody
                             = usherApi.getChannelPlaylist(channelName, parameters.getMap()).execute().body();
 
-                    Scanner scanner = new Scanner(new InputStreamReader(responseBody.byteStream()));
-                    String result = "";
-                    while (scanner.hasNextLine()) {
-                        result += scanner.nextLine() + "\n";
-                    }
-                    return StreamPlaylist.fromM3U8(result);
+                    return StreamPlaylist.fromM3U8(getStringResponse(responseBody));
                 });
+    }
+
+    @NonNull
+    private String getStringResponse(ResponseBody responseBody) {
+        Scanner scanner = new Scanner(new InputStreamReader(responseBody.byteStream()));
+        StringBuilder result = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            result.append(scanner.nextLine()).append("\n");
+        }
+        responseBody.close();
+        return result.toString();
     }
 }
