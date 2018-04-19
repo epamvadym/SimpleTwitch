@@ -1,5 +1,7 @@
 package com.vadym_horiainov.simpletwitch.mvvm.live_streams.item;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +11,19 @@ import com.vadym_horiainov.simpletwitch.R;
 import com.vadym_horiainov.simpletwitch.databinding.ActivityPlayStreamBinding;
 import com.vadym_horiainov.simpletwitch.mvvm.base.BindingActivity;
 
+import javax.inject.Inject;
+
 public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBinding, PlayStreamActivityVM> {
-    private static final String STREAM_URL_EXTRA = "STREAM_URL_EXTRA";
+    private static final String CHANNEL_NAME_EXTRA = "CHANNEL_NAME_EXTRA";
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     private ActivityPlayStreamBinding binding;
 
     public static Intent getPlayStreamActivityIntent(Context packageContext, String streamUrl) {
         Intent intent = new Intent(packageContext, PlayStreamActivity.class);
-        intent.putExtra(STREAM_URL_EXTRA, streamUrl);
+        intent.putExtra(CHANNEL_NAME_EXTRA, streamUrl);
         return intent;
     }
 
@@ -23,15 +31,21 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = getBinding();
+        getViewModel().playStream(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
+        subscribeToLiveData();
+    }
 
-        String streamUrl = getIntent().getStringExtra(STREAM_URL_EXTRA);
-        binding.vvStream.setVideoPath(streamUrl);
-        binding.vvStream.start();
+    private void subscribeToLiveData() {
+        getViewModel().getVideoUrlLiveData().observe(this,
+                videoPath -> {
+                    binding.vvStream.setVideoPath(videoPath);
+                    binding.vvStream.start();
+                });
     }
 
     @Override
     public PlayStreamActivityVM createViewModel() {
-        return new PlayStreamActivityVM(getApplication());
+        return ViewModelProviders.of(this, viewModelFactory).get(PlayStreamActivityVM.class);
     }
 
     @Override

@@ -14,7 +14,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-import retrofit2.http.Streaming;
 
 public interface StreamApi {
 
@@ -26,7 +25,7 @@ public interface StreamApi {
     Observable<JsonObject> getChannelToken(@Header("Client-ID") String client, @Path("channel") String channel);
 
     @UsherUrl
-    @Streaming // is it needed?
+//    @Streaming // is it needed?
     @GET("api/channel/hls/{channel}.m3u8")
-    Call<ResponseBody> getChannelPlaylist(@Path("channel") String channel, @QueryMap Map<String, String> params);
+    Call<ResponseBody> getChannelPlaylist(@Path("channel") String channel, @QueryMap Map<String, Object> params);
 }

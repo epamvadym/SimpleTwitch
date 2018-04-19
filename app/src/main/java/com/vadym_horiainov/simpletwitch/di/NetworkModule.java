@@ -1,5 +1,6 @@
 package com.vadym_horiainov.simpletwitch.di;
 
+import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.di.qualifires.ApiUrl;
 import com.vadym_horiainov.simpletwitch.di.qualifires.UsherUrl;
@@ -68,13 +69,13 @@ public class NetworkModule {
     @Provides
     @ApiUrl
     public String provideApiUrl() {
-        return "https://api.twitch.tv/";
+        return BuildConfig.API_URL;
     }
 
     @Singleton
     @Provides
     @UsherUrl
     public String provideUsherUrl() {
-        return "http://usher.twitch.tv/";
+        return BuildConfig.USHER_URL;
     }
 }

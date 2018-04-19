@@ -21,7 +21,6 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
 
     private final ObservableList<LiveStreamsItemVM> liveStreamsItemViewModels;
     private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemsLiveData;
-    private final MutableLiveData<String> chosenStreamNameLiveData;
     private final StreamRepository streamRepository;
 
     public LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository) {
@@ -29,7 +28,6 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
         this.streamRepository = streamRepository;
         liveStreamsItemViewModels = new ObservableArrayList<>();
         liveStreamsItemsLiveData = new MutableLiveData<>();
-        chosenStreamNameLiveData = new MutableLiveData<>();
         fetchData();
     }
 
@@ -37,10 +35,10 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
         getCompositeDisposable().add(
                 streamRepository.getLiveStreams()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(streams -> {
-                                    liveStreamsItemsLiveData.setValue(getViewModelList(streams));
-                                },
-                                throwable -> Log.e(TAG, "fetchData: ERROR", throwable))
+                        .subscribe(
+                                streams -> liveStreamsItemsLiveData.setValue(getViewModelList(streams)),
+                                throwable -> Log.e(TAG, "fetchData: ERROR", throwable)
+                        )
         );
     }
 
@@ -50,10 +48,6 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
 
     public MutableLiveData<List<LiveStreamsItemVM>> getLiveStreamsItemsLiveData() {
         return liveStreamsItemsLiveData;
-    }
-
-    public MutableLiveData<String> getChosenStreamNameLiveData() {
-        return chosenStreamNameLiveData;
     }
 
     public void addLiveStreamItemsToList(List<LiveStreamsItemVM> liveStreamsItems) {
@@ -74,16 +68,11 @@ public class LiveStreamsActivityVM extends ActivityViewModel implements LiveStre
 
     @Override
     public void onItemClick(String channelName) {
-        getCompositeDisposable().add(
-                streamRepository.getVideoUrl(channelName)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::openPlayStreamActivity,
-                                throwable -> Log.e(TAG, "onItemClick: ", throwable))
-        );
+        openPlayStreamActivity(channelName);
     }
 
-    private void openPlayStreamActivity(String streamUrl) {
-        Intent intent = PlayStreamActivity.getPlayStreamActivityIntent(getApplication(), streamUrl);
+    private void openPlayStreamActivity(String channelName) {
+        Intent intent = PlayStreamActivity.getPlayStreamActivityIntent(getApplication(), channelName);
         getApplication().startActivity(intent);
     }
 }
