@@ -15,18 +15,21 @@ import com.vadym_horiainov.simpletwitch.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class LiveStreamsActivityVM extends ActivityViewModel
         implements LiveStreamsItemVM.LiveStreamsItemViewModelListener {
-    private static final int PAGE_LIMIT = 10;
-    private static final int LOAD_THRESHOLD = 6;
+    private static final int PAGE_LIMIT = 50;
+    private static final int LOAD_THRESHOLD = 40;
     private final ObservableList<LiveStreamsItemVM> liveStreamsItemViewModels;
     private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemsLiveData;
     private final StreamRepository streamRepository;
     private int offset;
     private boolean isLoading;
 
+    @Inject
     LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository) {
         super(appContext);
         this.streamRepository = streamRepository;
@@ -46,7 +49,7 @@ public class LiveStreamsActivityVM extends ActivityViewModel
                                     isLoading = false;
                                     Log.d(TAG, "fetchData: offset - " + offset);
                                 },
-                                throwable -> Log.e(TAG, "fetchData: ERROR", throwable)
+                                throwable -> Log.e(TAG, "fetchData: ", throwable)
                         )
         );
     }
@@ -60,7 +63,6 @@ public class LiveStreamsActivityVM extends ActivityViewModel
     }
 
     public void addLiveStreamItemsToList(List<LiveStreamsItemVM> liveStreamsItems) {
-        liveStreamsItemViewModels.clear();
         liveStreamsItemViewModels.addAll(liveStreamsItems);
     }
 

@@ -2,6 +2,7 @@ package com.vadym_horiainov.simpletwitch.util;
 
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -25,8 +26,9 @@ public final class BindingUtils {
     @BindingAdapter({"adapter"})
     public static void addLiveStreamsItems(RecyclerView recyclerView, List<LiveStreamsItemVM> liveStreamsItemViewModels) {
         LiveStreamsAdapter adapter = (LiveStreamsAdapter) recyclerView.getAdapter();
+        Log.d("addLiveStreamsItems", "addLiveStreamsItems: " + liveStreamsItemViewModels.size());
         if (adapter != null) {
-            adapter.addItems(liveStreamsItemViewModels);
+            adapter.updateItems(liveStreamsItemViewModels);
         }
     }
 }

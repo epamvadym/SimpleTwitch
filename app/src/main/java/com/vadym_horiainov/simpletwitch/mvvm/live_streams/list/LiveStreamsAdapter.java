@@ -1,7 +1,9 @@
 package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,7 +15,8 @@ import java.util.List;
 
 public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.ViewHolder> {
 
-    private final List<LiveStreamsItemVM> liveStreamsItems = new ArrayList<>();
+    private final LiveStreamsDiffUtil diffUtil = new LiveStreamsDiffUtil();
+    private List<LiveStreamsItemVM> liveStreamsItems = new ArrayList<>();
 
     @NonNull
     @Override
@@ -33,13 +36,20 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
         return liveStreamsItems.size();
     }
 
-    public void addItems(List<LiveStreamsItemVM> items) {
-        liveStreamsItems.addAll(items);
-        notifyDataSetChanged();
+    public void updateItems(List<LiveStreamsItemVM> items) {
+        diffUtil.setOldList(new ArrayList<>(liveStreamsItems));
+        Log.d("diff", "addItems: old:" + liveStreamsItems.size());
+//        liveStreamsItems.addAll(items);
+        diffUtil.setNewList(items);
+        Log.d("diff", "addItems: new:" + items.size());
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtil);
+        liveStreamsItems = new ArrayList<>(items);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public void clearItems() {
         liveStreamsItems.clear();
+        notifyDataSetChanged();
     }
 
 
@@ -56,6 +66,39 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
             final LiveStreamsItemVM liveStreamsItemVM = liveStreamsItems.get(position);
             binding.setViewModel(liveStreamsItemVM);
             binding.executePendingBindings();
+        }
+    }
+
+    private static class LiveStreamsDiffUtil extends DiffUtil.Callback {
+        private List<LiveStreamsItemVM> oldList;
+        private List<LiveStreamsItemVM> newList;
+
+        void setOldList(List<LiveStreamsItemVM> oldList) {
+            this.oldList = new ArrayList<>(oldList);
+        }
+
+        void setNewList(List<LiveStreamsItemVM> newList) {
+            this.newList = new ArrayList<>(newList);
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldList.get(oldItemPosition).getName().equals(newList.get(newItemPosition).getName());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return areItemsTheSame(oldItemPosition, newItemPosition);
         }
     }
 }

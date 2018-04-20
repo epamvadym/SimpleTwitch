@@ -1,7 +1,7 @@
 package com.vadym_horiainov.simpletwitch.data.api;
 
 import com.google.gson.JsonObject;
-import com.vadym_horiainov.simpletwitch.di.qualifires.UsherUrl;
+import com.vadym_horiainov.simpletwitch.di.annotations.UsherUrl;
 import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
 
 import java.util.Map;

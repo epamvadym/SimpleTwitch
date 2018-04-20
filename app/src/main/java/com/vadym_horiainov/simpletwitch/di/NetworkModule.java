@@ -2,8 +2,8 @@ package com.vadym_horiainov.simpletwitch.di;
 
 import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
-import com.vadym_horiainov.simpletwitch.di.qualifires.ApiUrl;
-import com.vadym_horiainov.simpletwitch.di.qualifires.UsherUrl;
+import com.vadym_horiainov.simpletwitch.di.annotations.ApiUrl;
+import com.vadym_horiainov.simpletwitch.di.annotations.UsherUrl;
 
 import javax.inject.Singleton;
 

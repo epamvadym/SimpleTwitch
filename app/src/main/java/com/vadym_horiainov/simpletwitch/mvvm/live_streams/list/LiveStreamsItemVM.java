@@ -23,6 +23,10 @@ public class LiveStreamsItemVM {
         this.listener = listener;
     }
 
+    public String getName() {
+        return name.get();
+    }
+
     public void onItemClick() {
         listener.onItemClick(name.get());
     }

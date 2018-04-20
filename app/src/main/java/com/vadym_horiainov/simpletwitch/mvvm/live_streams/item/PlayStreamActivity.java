@@ -34,7 +34,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = getBinding();
-        getViewModel().playStream(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
+        getViewModel().liveStreamOpened(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
         setUp();
         subscribeToLiveData();
     }

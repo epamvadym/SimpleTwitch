@@ -38,7 +38,9 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
         binding.rvLiveStreams.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                getViewModel().listScrolled(linearLayoutManager.findLastVisibleItemPosition());
+                if (dy > 0) {
+                    getViewModel().listScrolled(linearLayoutManager.findLastVisibleItemPosition());
+                }
             }
         });
     }
