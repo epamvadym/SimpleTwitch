@@ -34,12 +34,6 @@ public abstract class BindingActivity<B extends ViewDataBinding, VM extends Acti
         binding.executePendingBindings();
     }
 
-    public void resetViewModel() {
-        viewModel = null;
-        viewModel = createViewModel();
-        getBinding().setVariable(getVariable(), viewModel);
-    }
-
     public B getBinding() {
         return binding;
     }

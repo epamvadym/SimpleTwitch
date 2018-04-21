@@ -47,7 +47,7 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
 
     private void subscribeToLiveData() {
         getViewModel().getLiveStreamsItemsLiveData().observe(this,
-                liveStreamsItemVMS -> getViewModel().addLiveStreamItemsToList(liveStreamsItemVMS));
+                getViewModel()::addLiveStreamItemsToList);
     }
 
     @Override
@@ -64,5 +64,4 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
     public int getLayoutId() {
         return R.layout.activity_live_streams;
     }
-
 }

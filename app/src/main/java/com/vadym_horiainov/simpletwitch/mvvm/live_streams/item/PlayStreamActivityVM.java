@@ -8,20 +8,22 @@ import com.vadym_horiainov.simpletwitch.data.StreamRepository;
 import com.vadym_horiainov.simpletwitch.models.StreamPlaylist;
 import com.vadym_horiainov.simpletwitch.mvvm.base.ActivityViewModel;
 import com.vadym_horiainov.simpletwitch.util.Log;
+import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
 import javax.inject.Inject;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class PlayStreamActivityVM extends ActivityViewModel {
     private final MutableLiveData<String> videoUrlLiveData;
     private final StreamRepository streamRepository;
+    private final SchedulerProvider schedulerProvider;
     private String channelName;
 
     @Inject
-    PlayStreamActivityVM(@NonNull Application application, StreamRepository streamRepository) {
+    PlayStreamActivityVM(@NonNull Application application, StreamRepository streamRepository,
+                         SchedulerProvider schedulerProvider) {
         super(application);
         this.streamRepository = streamRepository;
+        this.schedulerProvider = schedulerProvider;
         videoUrlLiveData = new MutableLiveData<>();
     }
 
@@ -35,7 +37,7 @@ public class PlayStreamActivityVM extends ActivityViewModel {
 
             getCompositeDisposable().add(
                     streamRepository.getStreamPlayList(channelName)
-                            .observeOn(AndroidSchedulers.mainThread())
+                            .observeOn(schedulerProvider.ui())
                             .subscribe(
                                     streamPlaylist -> videoUrlLiveData.setValue(
                                             streamPlaylist.getStreamMap().get(StreamPlaylist.QUALITY_SOURCE)),

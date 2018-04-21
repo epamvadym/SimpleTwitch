@@ -9,10 +9,16 @@
     </data>
 
 
-    <VideoView
-        android:id="@+id/vv_stream"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <VideoView
+            android:id="@+id/vv_stream"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
 
 </layout>

@@ -6,7 +6,7 @@ import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
 
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,12 +18,12 @@ import retrofit2.http.QueryMap;
 public interface StreamApi {
 
     @GET("kraken/streams")
-    Observable<LiveStreamsModel> getLiveStreamsModel(@Header("Client-ID") String client,
-                                                     @Query("limit") int limit,
-                                                     @Query("offset") int offset);
+    Single<LiveStreamsModel> getLiveStreamsModel(@Header("Client-ID") String client,
+                                                 @Query("limit") int limit,
+                                                 @Query("offset") int offset);
 
     @GET("api/channels/{channel}/access_token")
-    Observable<JsonObject> getChannelToken(@Header("Client-ID") String client, @Path("channel") String channel);
+    Single<JsonObject> getChannelToken(@Header("Client-ID") String client, @Path("channel") String channel);
 
     @UsherUrl
     @GET("api/channel/hls/{channel}.m3u8")

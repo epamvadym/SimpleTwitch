@@ -14,22 +14,21 @@ import android.view.ViewGroup;
 public abstract class BindingFragment<VM extends FragmentViewModel, B extends ViewDataBinding>
         extends Fragment {
 
-    protected abstract VM onCreateViewModel(B binding);
-
     private B binding;
     private VM viewModel;
-
     private Bundle savedInstanceState;
 
+    protected abstract VM onCreateViewModel(B binding);
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         viewModel = onCreateViewModel(binding);
@@ -88,7 +87,7 @@ public abstract class BindingFragment<VM extends FragmentViewModel, B extends Vi
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (viewModel != null) {
             viewModel.onSaveInstanceState(outState);

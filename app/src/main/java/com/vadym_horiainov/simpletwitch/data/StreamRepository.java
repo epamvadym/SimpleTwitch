@@ -8,33 +8,35 @@ import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
 import com.vadym_horiainov.simpletwitch.models.Stream;
 import com.vadym_horiainov.simpletwitch.models.StreamPlaylist;
+import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 
 public class StreamRepository {
     private final StreamApi streamApi;
     private final StreamApi usherApi;
+    private final SchedulerProvider schedulerProvider;
 
-    public StreamRepository(StreamApi streamApi, StreamApi usherApi) {
+    public StreamRepository(StreamApi streamApi, StreamApi usherApi, SchedulerProvider schedulerProvider) {
         this.streamApi = streamApi;
         this.usherApi = usherApi;
+        this.schedulerProvider = schedulerProvider;
     }
 
-    public Observable<List<Stream>> getLiveStreams(final int limit, final int offset) {
+    public Single<List<Stream>> getLiveStreams(final int limit, final int offset) {
         return streamApi.getLiveStreamsModel(BuildConfig.CLIENT_ID, limit, offset)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(schedulerProvider.io())
                 .map(LiveStreamsModel::getStreams);
     }
 
-    public Observable<StreamPlaylist> getStreamPlayList(final String channelName) {
+    public Single<StreamPlaylist> getStreamPlayList(final String channelName) {
         return streamApi.getChannelToken(BuildConfig.CLIENT_ID, channelName)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(schedulerProvider.io())
                 .map(jsonObject -> {
                     QueryParameters parameters = new QueryParameters.Builder()
                             .add("player", "twitchweb")
