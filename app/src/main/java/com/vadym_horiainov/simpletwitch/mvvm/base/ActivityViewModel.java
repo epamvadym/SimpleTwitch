@@ -50,7 +50,7 @@ public abstract class ActivityViewModel extends AndroidViewModel {
     }
 
     public void onDestroy() {
-        //realm.close();
+
     }
 
     public void onPause() {

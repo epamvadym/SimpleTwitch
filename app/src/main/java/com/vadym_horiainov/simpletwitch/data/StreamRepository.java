@@ -29,8 +29,6 @@ public class StreamRepository {
     public Observable<List<Stream>> getLiveStreams(final int limit, final int offset) {
         return streamApi.getLiveStreamsModel(BuildConfig.CLIENT_ID, limit, offset)
                 .subscribeOn(Schedulers.io())
-//                .doOnNext(liveStreamsModel -> {
-//                })
                 .map(LiveStreamsModel::getStreams);
     }
 

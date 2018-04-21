@@ -37,9 +37,8 @@ public class PlayStreamActivityVM extends ActivityViewModel {
                     streamRepository.getStreamPlayList(channelName)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
-                                    streamPlaylist -> {
-                                        videoUrlLiveData.setValue(streamPlaylist.getStreamMap().get(StreamPlaylist.QUALITY_SOURCE));
-                                    },
+                                    streamPlaylist -> videoUrlLiveData.setValue(
+                                            streamPlaylist.getStreamMap().get(StreamPlaylist.QUALITY_SOURCE)),
                                     throwable -> Log.e(TAG, "onItemClick: ", throwable)
                             )
             );

@@ -3,7 +3,6 @@ package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -36,14 +35,11 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
         return liveStreamsItems.size();
     }
 
-    public void updateItems(List<LiveStreamsItemVM> items) {
+    public void updateItems(List<LiveStreamsItemVM> newList) {
         diffUtil.setOldList(new ArrayList<>(liveStreamsItems));
-        Log.d("diff", "addItems: old:" + liveStreamsItems.size());
-//        liveStreamsItems.addAll(items);
-        diffUtil.setNewList(items);
-        Log.d("diff", "addItems: new:" + items.size());
+        diffUtil.setNewList(newList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtil);
-        liveStreamsItems = new ArrayList<>(items);
+        liveStreamsItems = new ArrayList<>(newList);
         diffResult.dispatchUpdatesTo(this);
     }
 
