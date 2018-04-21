@@ -8,7 +8,6 @@ import java.util.Map;
 
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -27,5 +26,5 @@ public interface StreamApi {
 
     @UsherUrl
     @GET("api/channel/hls/{channel}.m3u8")
-    Call<ResponseBody> getChannelPlaylist(@Path("channel") String channel, @QueryMap Map<String, Object> params);
+    Single<ResponseBody> getChannelPlaylist(@Path("channel") String channel, @QueryMap Map<String, Object> params);
 }

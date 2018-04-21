@@ -68,4 +68,11 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.lifecycleVersion"
+
+    // ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$rootProject.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$rootProject.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$rootProject.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$rootProject.exoPlayerVersion"
 }

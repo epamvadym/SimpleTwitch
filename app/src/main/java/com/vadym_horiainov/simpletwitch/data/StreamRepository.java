@@ -37,7 +37,7 @@ public class StreamRepository {
     public Single<StreamPlaylist> getStreamPlayList(final String channelName) {
         return streamApi.getChannelToken(BuildConfig.CLIENT_ID, channelName)
                 .subscribeOn(schedulerProvider.io())
-                .map(jsonObject -> {
+                .flatMap(jsonObject -> {
                     QueryParameters parameters = new QueryParameters.Builder()
                             .add("player", "twitchweb")
                             .add("token", jsonObject.get("token").getAsString())
@@ -47,12 +47,9 @@ public class StreamRepository {
                             .add("type", "any")
                             .add("p", 1)
                             .build();
-
-                    ResponseBody responseBody
-                            = usherApi.getChannelPlaylist(channelName, parameters.getMap()).execute().body();
-
-                    return StreamPlaylist.fromM3U8(getStringResponse(responseBody));
-                });
+                    return usherApi.getChannelPlaylist(channelName, parameters.getMap());
+                })
+                .map(responseBody -> StreamPlaylist.fromM3U8(getStringResponse(responseBody)));
     }
 
     @NonNull

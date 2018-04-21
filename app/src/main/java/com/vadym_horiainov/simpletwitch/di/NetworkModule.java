@@ -46,10 +46,11 @@ public class NetworkModule {
     @Singleton
     @Provides
     @UsherUrl
-    public Retrofit provideUsherRetrofit(@UsherUrl String baseUrl, Converter.Factory converterFactory) {
+    public Retrofit provideUsherRetrofit(@UsherUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
+                .addCallAdapterFactory(callAdapterFactory)
                 .build();
     }
 
