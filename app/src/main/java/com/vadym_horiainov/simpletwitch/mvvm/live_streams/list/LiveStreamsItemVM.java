@@ -13,7 +13,7 @@ public class LiveStreamsItemVM {
     public final ObservableField<String> status = new ObservableField<>();
     private final LiveStreamsItemViewModelListener listener;
 
-    public LiveStreamsItemVM(Stream stream, LiveStreamsItemViewModelListener listener) {
+    LiveStreamsItemVM(Stream stream, LiveStreamsItemViewModelListener listener) {
         this.streamPreviewUrl.set(stream.getPreview().getMedium());
         this.logoUrl.set(stream.getChannel().getLogo());
         this.displayName.set(stream.getChannel().getDisplayName());

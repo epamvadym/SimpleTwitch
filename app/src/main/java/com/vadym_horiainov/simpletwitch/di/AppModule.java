@@ -2,8 +2,6 @@ package com.vadym_horiainov.simpletwitch.di;
 
 import com.vadym_horiainov.simpletwitch.data.StreamRepository;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
-import com.vadym_horiainov.simpletwitch.di.annotations.ApiUrl;
-import com.vadym_horiainov.simpletwitch.di.annotations.UsherUrl;
 import com.vadym_horiainov.simpletwitch.util.rx.AppSchedulerProvider;
 import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
@@ -17,9 +15,8 @@ public class AppModule {
 
     @Singleton
     @Provides
-    StreamRepository provideStreamRepository(@ApiUrl StreamApi streamApi, @UsherUrl StreamApi usherApi,
-                                             SchedulerProvider schedulerProvider) {
-        return new StreamRepository(streamApi, usherApi, schedulerProvider);
+    StreamRepository provideStreamRepository(StreamApi streamApi, SchedulerProvider schedulerProvider) {
+        return new StreamRepository(streamApi, schedulerProvider);
     }
 
     @Singleton

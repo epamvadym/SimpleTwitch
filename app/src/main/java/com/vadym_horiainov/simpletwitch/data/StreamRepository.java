@@ -1,30 +1,23 @@
 package com.vadym_horiainov.simpletwitch.data;
 
-import android.support.annotation.NonNull;
+import android.net.Uri;
 
 import com.vadym_horiainov.simpletwitch.BuildConfig;
-import com.vadym_horiainov.simpletwitch.data.api.QueryParameters;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.models.LiveStreamsModel;
 import com.vadym_horiainov.simpletwitch.models.Stream;
-import com.vadym_horiainov.simpletwitch.models.StreamPlaylist;
 import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Scanner;
 
 import io.reactivex.Single;
-import okhttp3.ResponseBody;
 
 public class StreamRepository {
     private final StreamApi streamApi;
-    private final StreamApi usherApi;
     private final SchedulerProvider schedulerProvider;
 
-    public StreamRepository(StreamApi streamApi, StreamApi usherApi, SchedulerProvider schedulerProvider) {
+    public StreamRepository(StreamApi streamApi, SchedulerProvider schedulerProvider) {
         this.streamApi = streamApi;
-        this.usherApi = usherApi;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -34,32 +27,28 @@ public class StreamRepository {
                 .map(LiveStreamsModel::getStreams);
     }
 
-    public Single<StreamPlaylist> getStreamPlayList(final String channelName) {
+    // https://www.johannesbader.ch/2014/01/find-video-url-of-twitch-tv-live-streams-or-past-broadcasts/
+    // http://usher.twitch.tv/api/channel/hls/{channel}.m3u8? →
+    // player=twitchweb&&token={token}&sig={sig}& →
+    // allow_audio_only=true&allow_source=true&type=any&p={random}'
+    public Single<Uri> getStreamPlayList(final String channelName) {
         return streamApi.getChannelToken(BuildConfig.CLIENT_ID, channelName)
                 .subscribeOn(schedulerProvider.io())
-                .flatMap(jsonObject -> {
-                    QueryParameters parameters = new QueryParameters.Builder()
-                            .add("player", "twitchweb")
-                            .add("token", jsonObject.get("token").getAsString())
-                            .add("sig", jsonObject.get("sig").getAsString())
-                            .add("allow_audio_only", true)
-                            .add("allow_source", true)
-                            .add("type", "any")
-                            .add("p", 1)
-                            .build();
-                    return usherApi.getChannelPlaylist(channelName, parameters.getMap());
-                })
-                .map(responseBody -> StreamPlaylist.fromM3U8(getStringResponse(responseBody)));
-    }
-
-    @NonNull
-    private String getStringResponse(ResponseBody responseBody) {
-        Scanner scanner = new Scanner(new InputStreamReader(responseBody.byteStream()));
-        StringBuilder result = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            result.append(scanner.nextLine()).append("\n");
-        }
-        responseBody.close();
-        return result.toString();
+                .map(jsonObject -> new Uri.Builder()
+                        .scheme("http")
+                        .authority("usher.twitch.tv")
+                        .appendPath("api")
+                        .appendPath("channel")
+                        .appendPath("hls")
+                        .appendPath(channelName + ".m3u8")
+                        .appendQueryParameter("player", "twitchweb")
+                        .appendQueryParameter("token", jsonObject.get("token").getAsString())
+                        .appendQueryParameter("sig", jsonObject.get("sig").getAsString())
+                        .appendQueryParameter("allow_audio_only", "true")
+                        .appendQueryParameter("allow_source", "true")
+                        .appendQueryParameter("type", "any")
+                        .appendQueryParameter("p", "1")
+                        .build()
+                );
     }
 }

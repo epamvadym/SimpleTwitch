@@ -6,10 +6,11 @@ android {
         applicationId "com.vadym_horiainov.simpletwitch"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         debug {
             buildConfigField("String", "CLIENT_ID", '"0s4cg0hmn8rq4rrv4ex8rtkexoape7"')
@@ -17,14 +18,11 @@ android {
             buildConfigField("String", "USHER_URL", '"http://usher.twitch.tv/"')
         }
 
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-
-
 
     dataBinding {
         enabled = true
@@ -43,9 +41,9 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
 
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+//    testImplementation "junit:junit:$rootProject.junitVersion"
+//    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
+//    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
@@ -71,8 +69,8 @@ dependencies {
 
     // ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer-core:$rootProject.exoPlayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$rootProject.exoPlayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-hls:$rootProject.exoPlayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.exoPlayerVersion"
     implementation "com.google.android.exoplayer:exoplayer-ui:$rootProject.exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$rootProject.exoPlayerVersion"
+//    implementation "com.google.android.exoplayer:exoplayer-dash:$rootProject.exoPlayerVersion"
+//    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.exoPlayerVersion"
 }

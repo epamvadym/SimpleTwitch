@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -60,32 +58,22 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     }
 
     private void subscribeToLiveData() {
-        getViewModel().getVideoUrlLiveData().observe(this, this::playVideo);
+        getViewModel().getPlaylistUriLiveDataLiveData().observe(this, this::playVideo);
     }
 
-    private void playVideo(String videoPath) {
-        // 1. Create a default TrackSelector
-        // Measures bandwidth during playback. Can be null if not required.
-//        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-//        TrackSelection.Factory videoTrackSelectionFactory =
-//                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector();
+    private void playVideo(Uri playlistUri) {
 
-        // 2. Create the player
         SimpleExoPlayer player =
-                ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+                ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector());
 
-        // Bind the player to the view.
         playerView.setPlayer(player);
 
-
-//        // Produces DataSource instances through which media data is loaded.
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "SimpleTwitch"));
-        // This is the MediaSource representing the media to be played.
-        MediaSource videoSource = new HlsMediaSource(Uri.parse(videoPath),
-                dataSourceFactory, new Handler(), null);
-        // Prepare the player with the source.
+                Util.getUserAgent(this, getString(R.string.app_name)));
+
+
+        MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(playlistUri);
+
         player.prepare(videoSource);
         player.setPlayWhenReady(true);
     }

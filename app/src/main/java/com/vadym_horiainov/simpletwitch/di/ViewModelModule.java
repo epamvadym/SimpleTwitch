@@ -13,7 +13,7 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 
 @Module
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class ViewModelModule {
     @Binds
     @IntoMap
