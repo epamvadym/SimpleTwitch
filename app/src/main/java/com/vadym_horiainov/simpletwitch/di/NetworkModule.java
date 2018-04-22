@@ -21,37 +21,23 @@ public class NetworkModule {
     @Singleton
     @Provides
     @ApiUrl
-    public StreamApi provideStreamApi(@ApiUrl Retrofit retrofit) {
-        return retrofit.create(StreamApi.class);
+    public StreamApi provideStreamApi(@ApiUrl String baseUrl, Retrofit.Builder retrofitBuilder) {
+        return retrofitBuilder.baseUrl(baseUrl).build().create(StreamApi.class);
     }
 
     @Singleton
     @Provides
     @UsherUrl
-    public StreamApi provideUsherApi(@UsherUrl Retrofit retrofit) {
-        return retrofit.create(StreamApi.class);
+    public StreamApi provideUsherApi(@UsherUrl String baseUrl, Retrofit.Builder retrofitBuilder) {
+        return retrofitBuilder.baseUrl(baseUrl).build().create(StreamApi.class);
     }
 
     @Singleton
     @Provides
-    @ApiUrl
-    public Retrofit provideRetrofit(@ApiUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
+    public Retrofit.Builder provideRetrofitBuilder(Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
-                .addCallAdapterFactory(callAdapterFactory)
-                .build();
-    }
-
-    @Singleton
-    @Provides
-    @UsherUrl
-    public Retrofit provideUsherRetrofit(@UsherUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
-        return new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(converterFactory)
-                .addCallAdapterFactory(callAdapterFactory)
-                .build();
+                .addCallAdapterFactory(callAdapterFactory);
     }
 
     @Singleton
