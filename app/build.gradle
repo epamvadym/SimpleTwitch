@@ -15,7 +15,6 @@ android {
         debug {
             buildConfigField("String", "CLIENT_ID", '"0s4cg0hmn8rq4rrv4ex8rtkexoape7"')
             buildConfigField("String", "API_URL", '"https://api.twitch.tv/"')
-            buildConfigField("String", "USHER_URL", '"http://usher.twitch.tv/"')
         }
 
         release {
