@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
@@ -34,6 +35,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     private SimpleExoPlayer player;
     private DebugTextViewHelper debugViewHelper;
     private DataSource.Factory dataSourceFactory;
+    private MediaSource mediaSource;
     private DefaultTrackSelector trackSelector;
 
     public static Intent getPlayStreamActivityIntent(Context packageContext, String channelName) {
@@ -76,7 +78,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) { // cos of split mode
+        if (Util.SDK_INT > Build.VERSION_CODES.M) {
             subscribeToLiveData();
         }
     }
@@ -84,7 +86,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23)) {
+        if ((Util.SDK_INT <= Build.VERSION_CODES.M)) {
             subscribeToLiveData();
         }
     }
@@ -92,7 +94,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+        if (Util.SDK_INT <= Build.VERSION_CODES.M) {
             releasePlayer();
         }
     }
@@ -100,7 +102,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > Build.VERSION_CODES.M) {
             releasePlayer();
         }
     }
