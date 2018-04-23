@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvvm.live_streams.item.PlayStreamActivity" />
+        <activity android:name=".mvvm.live_streams.item.PlayStreamActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/PlayerTheme"/>
 
     </application>
 

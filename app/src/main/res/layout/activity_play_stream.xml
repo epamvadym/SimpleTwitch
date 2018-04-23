@@ -10,10 +10,32 @@
     </data>
 
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/player_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:use_controller="true"/>
+        android:layout_height="match_parent">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:use_controller="false" />
+
+        <TextView
+            android:id="@+id/debug_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Inverse" />
+
+        <LinearLayout android:id="@+id/controls_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+
+    </FrameLayout>
+
 
 </layout>

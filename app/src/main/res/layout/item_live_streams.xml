@@ -27,9 +27,9 @@
                 android:id="@+id/iv_stream_preview"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:scaleType="centerCrop"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@null"
+                android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.streamPreviewUrl}"
                 app:layout_constraintBottom_toTopOf="@+id/iv_channel_logo"
                 app:layout_constraintDimensionRatio="4:2"
@@ -93,6 +93,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/iv_channel_logo"
                 tools:text="Hearthstone" />
+
+            <TextView
+                android:id="@+id/tv_viewers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:text='@{viewModel.viewers + " viewers"}'
+                android:textAppearance="@android:style/TextAppearance.Material.Inverse"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_stream_preview"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="10000 viewers" />
 
         </android.support.constraint.ConstraintLayout>
 

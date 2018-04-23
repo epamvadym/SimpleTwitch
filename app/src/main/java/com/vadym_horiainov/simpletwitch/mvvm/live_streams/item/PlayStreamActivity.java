@@ -10,10 +10,9 @@ import android.os.Bundle;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -32,8 +31,10 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
 
     private ActivityPlayStreamBinding binding;
 
-    private PlayerView playerView;
     private SimpleExoPlayer player;
+    private DebugTextViewHelper debugViewHelper;
+    private DataSource.Factory dataSourceFactory;
+    private DefaultTrackSelector trackSelector;
 
     public static Intent getPlayStreamActivityIntent(Context packageContext, String channelName) {
         Intent intent = new Intent(packageContext, PlayStreamActivity.class);
@@ -50,47 +51,41 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
         binding = getBinding();
         getViewModel().liveStreamOpened(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
         setUp();
-        subscribeToLiveData();
     }
 
     private void setUp() {
-        playerView = binding.playerView;
+        trackSelector = new DefaultTrackSelector();
+        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+        binding.playerView.setPlayer(player);
+        dataSourceFactory = new DefaultDataSourceFactory(this,
+                Util.getUserAgent(this, getString(R.string.app_name)));
+        debugViewHelper = new DebugTextViewHelper(player, binding.debugTextView);
     }
+
 
     private void subscribeToLiveData() {
         getViewModel().getPlaylistUriLiveDataLiveData().observe(this, this::playVideo);
     }
 
     private void playVideo(Uri playlistUri) {
-
-        SimpleExoPlayer player =
-                ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector());
-
-        playerView.setPlayer(player);
-
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, getString(R.string.app_name)));
-
-
-        MediaSource videoSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(playlistUri);
-
-        player.prepare(videoSource);
+        player.prepare(new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(playlistUri));
         player.setPlayWhenReady(true);
+        debugViewHelper.start();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
-            initializePlayer();
+        if (Util.SDK_INT > 23) { // cos of split mode
+            subscribeToLiveData();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23 || player == null)) {
-            initializePlayer();
+        if ((Util.SDK_INT <= 23)) {
+            subscribeToLiveData();
         }
     }
 
@@ -110,15 +105,12 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
         }
     }
 
-    private void initializePlayer() {
-
-
-    }
-
     private void releasePlayer() {
         if (player != null) {
             player.release();
             player = null;
+            debugViewHelper.stop();
+            debugViewHelper = null;
         }
     }
 

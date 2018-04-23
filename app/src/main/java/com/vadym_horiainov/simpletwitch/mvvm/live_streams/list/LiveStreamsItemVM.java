@@ -11,6 +11,7 @@ public class LiveStreamsItemVM {
     public final ObservableField<String> game = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableField<String> status = new ObservableField<>();
+    public final ObservableField<Integer> viewers = new ObservableField<>();
     private final LiveStreamsItemViewModelListener listener;
 
     LiveStreamsItemVM(Stream stream, LiveStreamsItemViewModelListener listener) {
@@ -20,6 +21,7 @@ public class LiveStreamsItemVM {
         this.game.set(stream.getChannel().getGame());
         this.name.set(stream.getChannel().getName());
         this.status.set(stream.getChannel().getStatus());
+        this.viewers.set(stream.getViewers());
         this.listener = listener;
     }
 
