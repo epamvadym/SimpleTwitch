@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
-import com.google.android.exoplayer2.util.Util;
 import com.vadym_horiainov.simpletwitch.BR;
 import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.R;
@@ -41,15 +40,13 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = getBinding();
-        getViewModel().liveStreamOpened(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
+        getViewModel().onCreate(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= Build.VERSION_CODES.M)) {
-            subscribeToLiveData();
-        }
+        subscribeToLiveData();
     }
 
     @Override
