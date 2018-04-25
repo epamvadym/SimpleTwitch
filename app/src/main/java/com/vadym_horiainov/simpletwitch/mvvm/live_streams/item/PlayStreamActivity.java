@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -64,11 +62,11 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     }
 
     private void subscribeToLiveData() {
-        getViewModel().getPlayerLiveData().observe(this, this::playerViewSetPlayer);
-        getViewModel().getQualitiesLiveData().observe(this,this::setSpinnerItems);
+        getViewModel().getPlayerLiveData().observe(this, this::setUpPlayerView);
+        getViewModel().getQualitiesLiveData().observe(this, this::setUpSpinner);
     }
 
-    private void playerViewSetPlayer(SimpleExoPlayer player) {
+    private void setUpPlayerView(SimpleExoPlayer player) {
         binding.playerView.setPlayer(player);
         if (BuildConfig.DEBUG) {
             debugViewHelper = new DebugTextViewHelper(player, binding.debugTextView);
@@ -76,20 +74,9 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
         }
     }
 
-    private void setSpinnerItems(List<String> qualities) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, qualities);
+    private void setUpSpinner(List<String> qualities) {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,R.layout.spinner_quality_item, qualities);
         binding.spinnerQuality.setAdapter(arrayAdapter);
-        binding.spinnerQuality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getViewModel().qualityItemSelected(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     @Override

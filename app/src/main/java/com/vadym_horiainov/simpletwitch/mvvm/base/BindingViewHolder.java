@@ -3,9 +3,9 @@ package com.vadym_horiainov.simpletwitch.mvvm.base;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+public abstract class BindingViewHolder extends RecyclerView.ViewHolder {
 
-    public BaseViewHolder(View itemView) {
+    public BindingViewHolder(View itemView) {
         super(itemView);
     }
 

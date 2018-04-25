@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.vadym_horiainov.simpletwitch.databinding.ItemLiveStreamsBinding;
-import com.vadym_horiainov.simpletwitch.mvvm.base.BaseViewHolder;
+import com.vadym_horiainov.simpletwitch.mvvm.base.BindingViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class LiveStreamsAdapter extends RecyclerView.Adapter<LiveStreamsAdapter.
     }
 
 
-    class ViewHolder extends BaseViewHolder {
+    class ViewHolder extends BindingViewHolder {
         private final ItemLiveStreamsBinding binding;
 
         ViewHolder(ItemLiveStreamsBinding binding) {

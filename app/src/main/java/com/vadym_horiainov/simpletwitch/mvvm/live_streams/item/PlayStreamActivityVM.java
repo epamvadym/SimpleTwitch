@@ -38,8 +38,10 @@ public class PlayStreamActivityVM extends ActivityViewModel {
     private final StreamRepository streamRepository;
     private final SchedulerProvider schedulerProvider;
     private String channelName;
+
     private SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
+    private DefaultTrackSelector trackSelector;
 
     private ExoPlayer.DefaultEventListener exoPlayerEventListener = new Player.DefaultEventListener() {
         @Override
@@ -78,7 +80,7 @@ public class PlayStreamActivityVM extends ActivityViewModel {
     }
 
     private void initPlayer() {
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+        trackSelector = new DefaultTrackSelector();
         player = ExoPlayerFactory.newSimpleInstance(getApplication().getBaseContext(), trackSelector);
         player.addListener(exoPlayerEventListener);
         playerLiveData.setValue(player);
@@ -128,6 +130,6 @@ public class PlayStreamActivityVM extends ActivityViewModel {
     }
 
     public void qualityItemSelected(int position) {
-
+        // todo select stream quality
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,7 +37,11 @@
             android:id="@+id/spinner_quality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"/>
+            android:layout_gravity="end|bottom"
+            android:layout_margin="4dp"
+            android:onItemSelected="@{(parent, view, position, id) -> viewModel.qualityItemSelected(position)}"
+            android:popupBackground="@android:color/transparent"
+            tools:listitem="@layout/spinner_quality_item" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
