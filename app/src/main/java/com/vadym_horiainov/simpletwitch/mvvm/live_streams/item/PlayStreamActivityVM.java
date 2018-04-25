@@ -10,8 +10,11 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -21,10 +24,16 @@ import com.vadym_horiainov.simpletwitch.mvvm.base.ActivityViewModel;
 import com.vadym_horiainov.simpletwitch.util.Log;
 import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 public class PlayStreamActivityVM extends ActivityViewModel {
     private final MutableLiveData<SimpleExoPlayer> playerLiveData;
+    private final MutableLiveData<List<String>> qualitiesLiveData;
     private final ObservableBoolean isLoading;
     private final StreamRepository streamRepository;
     private final SchedulerProvider schedulerProvider;
@@ -37,6 +46,23 @@ public class PlayStreamActivityVM extends ActivityViewModel {
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             isLoading.set(playbackState != Player.STATE_READY);
         }
+
+        @Override
+        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            // todo find out the optimal way how to get quality list
+            HlsManifest manifest = (HlsManifest) player.getCurrentManifest();
+            if (manifest != null) {
+                Pattern pattern = Pattern.compile("NAME=\"(.+?)\"");
+                List<String> qualities = new ArrayList<>();
+                for (String tag : manifest.masterPlaylist.tags) {
+                    Matcher matcher = pattern.matcher(tag);
+                    if (matcher.find() && matcher.groupCount() == 1) {
+                        qualities.add( matcher.group(1));
+                    }
+                }
+                qualitiesLiveData.setValue(qualities);
+            }
+        }
     };
 
     @Inject
@@ -46,12 +72,12 @@ public class PlayStreamActivityVM extends ActivityViewModel {
         this.streamRepository = streamRepository;
         this.schedulerProvider = schedulerProvider;
         playerLiveData = new MutableLiveData<>();
+        qualitiesLiveData = new MutableLiveData<>();
         isLoading = new ObservableBoolean();
         initPlayer();
     }
 
     private void initPlayer() {
-//        AdaptiveTrackSelection.Factory adaptiveTrackSelection = new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter());
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
         player = ExoPlayerFactory.newSimpleInstance(getApplication().getBaseContext(), trackSelector);
         player.addListener(exoPlayerEventListener);
@@ -62,6 +88,10 @@ public class PlayStreamActivityVM extends ActivityViewModel {
 
     public MutableLiveData<SimpleExoPlayer> getPlayerLiveData() {
         return playerLiveData;
+    }
+
+    public MutableLiveData<List<String>> getQualitiesLiveData() {
+        return qualitiesLiveData;
     }
 
     public ObservableBoolean isLoading() {
@@ -95,5 +125,9 @@ public class PlayStreamActivityVM extends ActivityViewModel {
         super.onCleared();
         player.release();
         player = null;
+    }
+
+    public void qualityItemSelected(int position) {
+
     }
 }

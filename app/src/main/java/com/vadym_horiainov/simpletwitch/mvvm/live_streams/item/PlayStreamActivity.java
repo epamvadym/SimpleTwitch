@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.DebugTextViewHelper;
@@ -14,6 +17,8 @@ import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.R;
 import com.vadym_horiainov.simpletwitch.databinding.ActivityPlayStreamBinding;
 import com.vadym_horiainov.simpletwitch.mvvm.base.BindingActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -60,6 +65,7 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
 
     private void subscribeToLiveData() {
         getViewModel().getPlayerLiveData().observe(this, this::playerViewSetPlayer);
+        getViewModel().getQualitiesLiveData().observe(this,this::setSpinnerItems);
     }
 
     private void playerViewSetPlayer(SimpleExoPlayer player) {
@@ -68,6 +74,22 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
             debugViewHelper = new DebugTextViewHelper(player, binding.debugTextView);
             debugViewHelper.start();
         }
+    }
+
+    private void setSpinnerItems(List<String> qualities) {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, qualities);
+        binding.spinnerQuality.setAdapter(arrayAdapter);
+        binding.spinnerQuality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getViewModel().qualityItemSelected(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
