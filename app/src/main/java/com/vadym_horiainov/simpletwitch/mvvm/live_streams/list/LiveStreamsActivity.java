@@ -2,7 +2,6 @@ package com.vadym_horiainov.simpletwitch.mvvm.live_streams.list;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import com.vadym_horiainov.simpletwitch.BR;
 import com.vadym_horiainov.simpletwitch.R;
 import com.vadym_horiainov.simpletwitch.databinding.ActivityLiveStreamsBinding;
-import com.vadym_horiainov.simpletwitch.mvvm.BrowserActivity;
 import com.vadym_horiainov.simpletwitch.mvvm.base.BindingActivity;
 
 import javax.inject.Inject;
@@ -46,9 +44,9 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
             }
         });
 
-        findViewById(R.id.login).setOnClickListener(v -> {
-            startActivity(new Intent(LiveStreamsActivity.this, BrowserActivity.class));
-        });
+//        findViewById(R.id.login).setOnClickListener(v -> {
+//            startActivity(new Intent(LiveStreamsActivity.this, BrowserActivity.class));
+//        });
 
 //        findViewById(R.id.exit).setOnClickListener(v -> {
 //            Retrofit retrofit = new Retrofit.Builder()
