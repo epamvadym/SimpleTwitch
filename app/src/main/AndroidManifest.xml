@@ -13,18 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".mvvm.live_streams.list.LiveStreamsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".mvvm.live_streams.item.PlayStreamActivity"
+        <activity
+            android:name=".mvvm.live_streams.item.PlayStreamActivity"
             android:launchMode="singleTop"
-            android:theme="@style/PlayerTheme"/>
-
+            android:theme="@style/PlayerTheme" />
+        <activity android:name=".mvvm.UserActivity" />
+        <activity android:name=".mvvm.BrowserActivity"></activity>
     </application>
 
 </manifest>

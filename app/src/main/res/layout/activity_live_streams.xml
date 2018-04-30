@@ -10,21 +10,29 @@
             type="com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivityVM" />
     </data>
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srl_root"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:onRefreshListener="@{() -> viewModel.onRefresh()}"
-        app:refreshing="@{viewModel.isLoading}">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_live_streams"
+        <include layout="@layout/toolbar" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:adapter="@{viewModel.liveStreamsItemViewModels}"
-            tools:listitem="@layout/item_live_streams"/>
+            app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            app:refreshing="@{viewModel.isLoading}">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_live_streams"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:adapter="@{viewModel.liveStreamsItemViewModels}"
+                tools:listitem="@layout/item_live_streams" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
 
 </layout>
