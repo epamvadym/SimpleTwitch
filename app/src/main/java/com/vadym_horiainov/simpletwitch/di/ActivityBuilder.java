@@ -4,6 +4,8 @@ import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivit
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivityModule;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivity;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivityModule;
+import com.vadym_horiainov.simpletwitch.mvvm.login.LoginActivity;
+import com.vadym_horiainov.simpletwitch.mvvm.login.LoginActivityModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -19,4 +21,9 @@ abstract class ActivityBuilder {
             PlayStreamActivityModule.class
     })
     abstract PlayStreamActivity bindPlayStreamActivity();
+
+    @ContributesAndroidInjector(modules = {
+            LoginActivityModule.class
+    })
+    abstract LoginActivity bindLoginActivity();
 }

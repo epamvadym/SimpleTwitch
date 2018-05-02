@@ -24,8 +24,8 @@
             android:name=".mvvm.live_streams.item.PlayStreamActivity"
             android:launchMode="singleTop"
             android:theme="@style/PlayerTheme" />
-        <activity android:name=".mvvm.UserActivity" />
-        <activity android:name=".mvvm.BrowserActivity"></activity>
+        <activity android:name=".mvvm.user.UserActivity" />
+        <activity android:name=".mvvm.login.LoginActivity"></activity>
     </application>
 
 </manifest>

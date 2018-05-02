@@ -1,7 +1,5 @@
 package com.vadym_horiainov.simpletwitch.di;
 
-import com.vadym_horiainov.simpletwitch.data.StreamRepository;
-import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
 import com.vadym_horiainov.simpletwitch.util.rx.AppSchedulerProvider;
 import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
@@ -12,12 +10,6 @@ import dagger.Provides;
 
 @Module(includes = ViewModelModule.class)
 public class AppModule {
-
-    @Singleton
-    @Provides
-    StreamRepository provideStreamRepository(StreamApi streamApi, SchedulerProvider schedulerProvider) {
-        return new StreamRepository(streamApi, schedulerProvider);
-    }
 
     @Singleton
     @Provides

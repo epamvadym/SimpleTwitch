@@ -1,4 +1,4 @@
-package com.vadym_horiainov.simpletwitch.mvvm;
+package com.vadym_horiainov.simpletwitch.mvvm.user;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

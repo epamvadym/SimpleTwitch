@@ -44,8 +44,10 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
             }
         });
 
+        setSupportActionBar(binding.toolbar);
+
 //        findViewById(R.id.login).setOnClickListener(v -> {
-//            startActivity(new Intent(LiveStreamsActivity.this, BrowserActivity.class));
+//            startActivity(new Intent(LiveStreamsActivity.this, LoginActivity.class));
 //        });
 
 //        findViewById(R.id.exit).setOnClickListener(v -> {

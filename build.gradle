@@ -38,8 +38,6 @@ ext {
 
     glideVersion = '4.3.1'
 
-    roomDatabase = '1.0.0'
-
     dagger2Version = '2.14.1'
 
     rxjava2Version = '2.1.9'
@@ -49,6 +47,7 @@ ext {
     retrofitRxAdapterVersion = '2.3.0'
 
     lifecycleVersion = '1.1.1'
+    roomVersion = '1.0.0'
 
     exoPlayerVersion = '2.7.3'
 

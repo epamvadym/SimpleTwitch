@@ -7,6 +7,7 @@ import com.vadym_horiainov.simpletwitch.di.annotations.ViewModelKey;
 import com.vadym_horiainov.simpletwitch.mvvm.ViewModelProviderFactory;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivityVM;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivityVM;
+import com.vadym_horiainov.simpletwitch.mvvm.login.LoginActivityVM;
 
 import dagger.Binds;
 import dagger.Module;
@@ -23,7 +24,12 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(PlayStreamActivityVM.class)
-    abstract ViewModel bindSearchViewModel(PlayStreamActivityVM playStreamActivityViewModel);
+    abstract ViewModel bindPlayStreamActivityViewModel(PlayStreamActivityVM playStreamActivityViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginActivityVM.class)
+    abstract ViewModel bindLoginActivityViewModel(LoginActivityVM loginActivityViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelProviderFactory factory);
