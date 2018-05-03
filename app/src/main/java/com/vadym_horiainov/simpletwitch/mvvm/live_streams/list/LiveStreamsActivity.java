@@ -33,6 +33,7 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
     }
 
     private void setUp() {
+        setSupportActionBar(binding.toolbar);
         binding.rvLiveStreams.setLayoutManager(linearLayoutManager);
         binding.rvLiveStreams.setAdapter(liveStreamsAdapter);
         binding.rvLiveStreams.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -43,30 +44,6 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
                 }
             }
         });
-
-        setSupportActionBar(binding.toolbar);
-
-//        findViewById(R.id.login).setOnClickListener(v -> {
-//            startActivity(new Intent(LiveStreamsActivity.this, LoginActivity.class));
-//        });
-
-//        findViewById(R.id.exit).setOnClickListener(v -> {
-//            Retrofit retrofit = new Retrofit.Builder()
-//                    .baseUrl("https://id.twitch.tv")
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                    .build();
-//
-//            StreamApi streamApi = retrofit.create(StreamApi.class);
-//
-//            streamApi.revokeAccessToken(BuildConfig.CLIENT_ID, "doli8cvlzeoxvycyjtnja3xkvx2yrk")
-//                    .subscribeOn(Schedulers.io())
-//                    .subscribe(responseBody -> {
-//
-//                    }, throwable -> {
-//                        Log.e("ERROR", "setUp: ", throwable);
-//                    });
-//        });
     }
 
     private void subscribeToLiveData() {

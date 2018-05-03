@@ -10,6 +10,7 @@ import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 @Singleton
@@ -31,12 +32,24 @@ public class UserRepository {
         preferencesHelper.saveToken(accessToken);
     }
 
-    public Single<User> getUser(String accessToken) {
+    public String getToken() {
+        return preferencesHelper.getToken();
+    }
+
+    public Single<User> fetchUser(String accessToken) {
         return userApi.getUserInfo(BuildConfig.CLIENT_ID, accessToken)
                 .subscribeOn(schedulerProvider.io());
     }
 
+    public Flowable<User> getUser() {
+        return userDao.getUser();
+    }
+
     public void saveUser(User user) {
-        userDao.insertUser(user);
+        userDao.insert(user);
+    }
+
+    public void clearUser(User user) {
+        userDao.delete(user);
     }
 }

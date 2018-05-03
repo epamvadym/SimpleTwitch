@@ -5,12 +5,16 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.databinding.ObservableList;
 
 import com.vadym_horiainov.simpletwitch.data.StreamRepository;
+import com.vadym_horiainov.simpletwitch.data.UserRepository;
 import com.vadym_horiainov.simpletwitch.models.Stream;
+import com.vadym_horiainov.simpletwitch.models.User;
 import com.vadym_horiainov.simpletwitch.mvvm.base.ActivityViewModel;
 import com.vadym_horiainov.simpletwitch.mvvm.live_streams.item.PlayStreamActivity;
+import com.vadym_horiainov.simpletwitch.mvvm.login.LoginActivity;
 import com.vadym_horiainov.simpletwitch.util.Log;
 import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
@@ -18,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Completable;
 
 public class LiveStreamsActivityVM extends ActivityViewModel
         implements LiveStreamsItemVM.LiveStreamsItemViewModelListener {
@@ -27,14 +33,34 @@ public class LiveStreamsActivityVM extends ActivityViewModel
     private final MutableLiveData<List<LiveStreamsItemVM>> liveStreamsItemsLiveData;
     private final ObservableBoolean isLoading;
     private final StreamRepository streamRepository;
+    private final UserRepository userRepository;
     private final SchedulerProvider schedulerProvider;
     private int offset;
 
+    // login temporary
+    public final ObservableField<User> user = new ObservableField<>();
+
+    public void userLogoClicked() {
+        if (user.get() == null) {
+            getApplication().startActivity(new Intent(getApplication(), LoginActivity.class));
+        } else {
+            getCompositeDisposable().add(
+                    Completable.fromAction(() -> userRepository.clearUser(user.get()))
+                            .subscribeOn(schedulerProvider.io())
+                            .observeOn(schedulerProvider.ui())
+                            .subscribe(() -> user.set(null),
+                                    throwable -> android.util.Log.e(TAG, "userLogoClicked: ", throwable))
+            );
+        }
+    }
+    //
+
     @Inject
     LiveStreamsActivityVM(Application appContext, StreamRepository streamRepository,
-                          SchedulerProvider schedulerProvider) {
+                          UserRepository userRepository, SchedulerProvider schedulerProvider) {
         super(appContext);
         this.streamRepository = streamRepository;
+        this.userRepository = userRepository;
         this.schedulerProvider = schedulerProvider;
         liveStreamsItemViewModels = new ObservableArrayList<>();
         liveStreamsItemsLiveData = new MutableLiveData<>();
@@ -54,6 +80,12 @@ public class LiveStreamsActivityVM extends ActivityViewModel
                                 },
                                 throwable -> Log.e(TAG, "fetchData: ", throwable)
                         )
+        );
+        getCompositeDisposable().add(
+                userRepository.getUser()
+                        .subscribeOn(schedulerProvider.io())
+                        .subscribe(user::set,
+                                throwable -> android.util.Log.e(TAG, "fetchData: ", throwable))
         );
     }
 

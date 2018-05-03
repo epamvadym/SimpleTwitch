@@ -1,6 +1,8 @@
 package com.vadym_horiainov.simpletwitch.mvvm.login;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.CookieManager;
@@ -12,6 +14,7 @@ import com.vadym_horiainov.simpletwitch.R;
 import com.vadym_horiainov.simpletwitch.databinding.ActivityLoginBinding;
 import com.vadym_horiainov.simpletwitch.di.annotations.OauthUrl;
 import com.vadym_horiainov.simpletwitch.mvvm.base.BindingActivity;
+import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivity;
 import com.vadym_horiainov.simpletwitch.mvvm.user.UserActivity;
 
 import javax.inject.Inject;
@@ -22,6 +25,9 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginAc
     @OauthUrl
     String oauthUrl;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     private ActivityLoginBinding binding;
 
     @Override
@@ -29,6 +35,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginAc
         super.onCreate(savedInstanceState);
         binding = getBinding();
         setUp();
+        subscribeToLiveData();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -51,8 +58,6 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginAc
                     view.clearCache(true);
                     view.clearHistory();
                     view.clearFormData();
-
-                    startUserActivity();
                     return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
@@ -61,15 +66,26 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginAc
         webView.loadUrl(oauthUrl);
     }
 
+    private void subscribeToLiveData() {
+        getViewModel().getUserInfoReceivedLiveData().observe(this, success -> {
+            if (success != null && success) startLiveStreams();
+        });
+    }
+
     private void startUserActivity() {
-        Intent intent = new Intent(this, UserActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, UserActivity.class));
         finish();
     }
 
+    private void startLiveStreams() {
+        startActivity(new Intent(this, LiveStreamsActivity.class));
+        finish();
+    }
+
+
     @Override
     public LoginActivityVM createViewModel() {
-        return null;
+        return ViewModelProviders.of(this, viewModelFactory).get(LoginActivityVM.class);
     }
 
     @Override

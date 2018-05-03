@@ -1,6 +1,7 @@
 package com.vadym_horiainov.simpletwitch.util;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
@@ -27,6 +28,19 @@ public final class BindingUtils {
         LiveStreamsAdapter adapter = (LiveStreamsAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.updateItems(liveStreamsItemViewModels);
+        }
+    }
+
+    @BindingAdapter("android:src")
+    public static void setImageUri(ImageView imageView, Object image) {
+        if (image instanceof String) {
+            Glide.with(imageView.getContext())
+                    .load(image)
+                    .into(imageView);
+        } else if (image instanceof Drawable) {
+            imageView.setImageDrawable((Drawable) image);
+        } else if (image instanceof Integer) {
+            imageView.setImageResource((Integer) image);
         }
     }
 }
