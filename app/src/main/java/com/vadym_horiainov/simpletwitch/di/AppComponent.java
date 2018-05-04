@@ -16,7 +16,7 @@ import dagger.android.AndroidInjectionModule;
         AppModule.class,
         ActivityBuilder.class,
         NetworkModule.class,
-        DbModule.class
+        DatabaseModule.class
 })
 public interface AppComponent {
 

@@ -16,6 +16,17 @@ public final class BindingUtils {
     private BindingUtils() {
     }
 
+    @BindingAdapter("android:src")
+    public static void setImageUri(ImageView imageView, Object image) {
+        if (image instanceof String) {
+            setImageUrl(imageView, (String) image);
+        } else if (image instanceof Drawable) {
+            imageView.setImageDrawable((Drawable) image);
+        } else if (image instanceof Integer) {
+            imageView.setImageResource((Integer) image);
+        }
+    }
+
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView imageView, String url) {
         Glide.with(imageView.getContext())
@@ -28,19 +39,6 @@ public final class BindingUtils {
         LiveStreamsAdapter adapter = (LiveStreamsAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.updateItems(liveStreamsItemViewModels);
-        }
-    }
-
-    @BindingAdapter("android:src")
-    public static void setImageUri(ImageView imageView, Object image) {
-        if (image instanceof String) {
-            Glide.with(imageView.getContext())
-                    .load(image)
-                    .into(imageView);
-        } else if (image instanceof Drawable) {
-            imageView.setImageDrawable((Drawable) image);
-        } else if (image instanceof Integer) {
-            imageView.setImageResource((Integer) image);
         }
     }
 }

@@ -28,6 +28,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize">
 
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toolbar_title_live_streams"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse" />
+
                     <android.support.v7.widget.AppCompatImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -27,7 +27,7 @@
             android:launchMode="singleTop"
             android:theme="@style/PlayerTheme" />
 
-        <activity android:name=".mvvm.user.UserActivity" />
+        <activity android:name=".mvvm.user.UserInfoActivity" />
 
         <activity android:name=".mvvm.login.LoginActivity" />
 

@@ -14,8 +14,7 @@ import com.vadym_horiainov.simpletwitch.R;
 import com.vadym_horiainov.simpletwitch.databinding.ActivityLoginBinding;
 import com.vadym_horiainov.simpletwitch.di.annotations.OauthUrl;
 import com.vadym_horiainov.simpletwitch.mvvm.base.BindingActivity;
-import com.vadym_horiainov.simpletwitch.mvvm.live_streams.list.LiveStreamsActivity;
-import com.vadym_horiainov.simpletwitch.mvvm.user.UserActivity;
+import com.vadym_horiainov.simpletwitch.mvvm.user.UserInfoActivity;
 
 import javax.inject.Inject;
 
@@ -68,20 +67,14 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginAc
 
     private void subscribeToLiveData() {
         getViewModel().getUserInfoReceivedLiveData().observe(this, success -> {
-            if (success != null && success) startLiveStreams();
+            if (success != null && success) finish();;
         });
     }
 
     private void startUserActivity() {
-        startActivity(new Intent(this, UserActivity.class));
+        startActivity(new Intent(this, UserInfoActivity.class));
         finish();
     }
-
-    private void startLiveStreams() {
-        startActivity(new Intent(this, LiveStreamsActivity.class));
-        finish();
-    }
-
 
     @Override
     public LoginActivityVM createViewModel() {

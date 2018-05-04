@@ -10,7 +10,6 @@ import retrofit2.http.Query;
 public interface UserApi {
 
     @GET("kraken/user")
-    Single<User> getUserInfo(@Header("Client-ID") String client,
-                             @Query("oauth_token") String token);
+    Single<User> getUserInfo(@Header("Client-ID") String client, @Query("oauth_token") String token);
 
 }

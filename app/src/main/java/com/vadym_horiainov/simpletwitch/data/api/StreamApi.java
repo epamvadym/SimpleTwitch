@@ -25,6 +25,5 @@ public interface StreamApi {
 
     @FormUrlEncoded
     @POST("oauth2/revoke")
-    Single<ResponseBody> revokeAccessToken(@Field("client_id") String client,
-                                        @Field("token") String token);
+    Single<ResponseBody> revokeAccessToken(@Field("client_id") String client, @Field("token") String token);
 }

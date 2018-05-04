@@ -37,7 +37,7 @@ public class LiveStreamsActivityVM extends ActivityViewModel
     private final SchedulerProvider schedulerProvider;
     private int offset;
 
-    // login temporary
+    // login, temporary here
     public final ObservableField<User> user = new ObservableField<>();
 
     public void userLogoClicked() {

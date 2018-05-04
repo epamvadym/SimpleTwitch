@@ -2,21 +2,14 @@ package com.vadym_horiainov.simpletwitch.mvvm.user;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import com.vadym_horiainov.simpletwitch.R;
 
-public class UserActivity extends AppCompatActivity {
+public class UserInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
-
-        String json = getIntent().getStringExtra("1");
-
-        TextView textView = findViewById(R.id.user);
-        textView.setText(json);
-
+        setContentView(R.layout.activity_user_info);
     }
 }
