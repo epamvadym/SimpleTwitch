@@ -40,10 +40,6 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
 
-//    testImplementation "junit:junit:$rootProject.junitVersion"
-//    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
-//    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
