@@ -33,6 +33,7 @@ public class LiveStreamsActivity extends BindingActivity<ActivityLiveStreamsBind
     }
 
     private void setUp() {
+        setSupportActionBar(binding.toolbar);
         binding.rvLiveStreams.setLayoutManager(linearLayoutManager);
         binding.rvLiveStreams.setAdapter(liveStreamsAdapter);
         binding.rvLiveStreams.addOnScrollListener(new RecyclerView.OnScrollListener() {

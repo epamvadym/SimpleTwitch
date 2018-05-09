@@ -15,6 +15,8 @@ android {
         debug {
             buildConfigField("String", "CLIENT_ID", '"0s4cg0hmn8rq4rrv4ex8rtkexoape7"')
             buildConfigField("String", "API_URL", '"https://api.twitch.tv/"')
+            buildConfigField("String", "DATABASE_NAME", '"twitch_db"')
+            buildConfigField("String", "PREF_NAME", '"twitch_pref"')
         }
 
         release {
@@ -38,6 +40,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
 
     // Retrofit
@@ -61,6 +64,13 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.lifecycleVersion"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+
 
     // ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer-core:$rootProject.exoPlayerVersion"

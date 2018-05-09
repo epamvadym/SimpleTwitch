@@ -17,13 +17,19 @@
         <activity android:name=".mvvm.live_streams.list.LiveStreamsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvvm.live_streams.item.PlayStreamActivity"
+        <activity
+            android:name=".mvvm.live_streams.item.PlayStreamActivity"
             android:launchMode="singleTop"
-            android:theme="@style/PlayerTheme"/>
+            android:theme="@style/PlayerTheme" />
+
+        <activity android:name=".mvvm.user.UserInfoActivity" />
+
+        <activity android:name=".mvvm.login.LoginActivity" />
 
     </application>
 

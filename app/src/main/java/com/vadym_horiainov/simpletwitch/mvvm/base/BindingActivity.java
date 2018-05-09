@@ -73,7 +73,6 @@ public abstract class BindingActivity<B extends ViewDataBinding, VM extends Acti
         if (!viewModel.onBackKeyPress()) {
             super.onBackPressed();
         }
-
     }
 
     @Override

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Twitch Simple</string>
+    <string name="toolbar_title_live_streams">Live streams</string>
 </resources>

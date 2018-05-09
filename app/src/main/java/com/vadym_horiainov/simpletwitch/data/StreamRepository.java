@@ -10,13 +10,18 @@ import com.vadym_horiainov.simpletwitch.util.rx.SchedulerProvider;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Single;
 
+@Singleton
 public class StreamRepository {
     private final StreamApi streamApi;
     private final SchedulerProvider schedulerProvider;
 
-    public StreamRepository(StreamApi streamApi, SchedulerProvider schedulerProvider) {
+    @Inject
+    StreamRepository(StreamApi streamApi, SchedulerProvider schedulerProvider) {
         this.streamApi = streamApi;
         this.schedulerProvider = schedulerProvider;
     }

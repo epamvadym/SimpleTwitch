@@ -21,18 +21,21 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBinding, PlayStreamActivityVM> {
-    private static final String CHANNEL_NAME_EXTRA = "CHANNEL_NAME_EXTRA";
+    private static final String EXTRA_CHANNEL_NAME = "EXTRA_CHANNEL_NAME";
+    private static final String KEY_SPINNER_POSITION = "KEY_SPINNER_POSITION";
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ArrayAdapter<String> arrayAdapter;
 
     private ActivityPlayStreamBinding binding;
-
     private DebugTextViewHelper debugViewHelper;
+    private int qualitySpinnerPosition;
 
     public static Intent getPlayStreamActivityIntent(Context packageContext, String channelName) {
         Intent intent = new Intent(packageContext, PlayStreamActivity.class);
-        intent.putExtra(CHANNEL_NAME_EXTRA, channelName);
+        intent.putExtra(EXTRA_CHANNEL_NAME, channelName);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
@@ -42,8 +45,11 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            qualitySpinnerPosition = savedInstanceState.getInt(KEY_SPINNER_POSITION);
+        }
         binding = getBinding();
-        getViewModel().onCreate(getIntent().getStringExtra(CHANNEL_NAME_EXTRA));
+        getViewModel().onCreate(getIntent().getStringExtra(EXTRA_CHANNEL_NAME));
     }
 
     @Override
@@ -61,6 +67,12 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SPINNER_POSITION, binding.spinnerQuality.getSelectedItemPosition());
+    }
+
     private void subscribeToLiveData() {
         getViewModel().getPlayerLiveData().observe(this, this::setUpPlayerView);
         getViewModel().getQualitiesLiveData().observe(this, this::setUpSpinner);
@@ -75,8 +87,9 @@ public class PlayStreamActivity extends BindingActivity<ActivityPlayStreamBindin
     }
 
     private void setUpSpinner(List<String> qualities) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,R.layout.spinner_quality_item, qualities);
+        arrayAdapter.addAll(qualities);
         binding.spinnerQuality.setAdapter(arrayAdapter);
+        binding.spinnerQuality.setSelection(qualitySpinnerPosition);
     }
 
     @Override

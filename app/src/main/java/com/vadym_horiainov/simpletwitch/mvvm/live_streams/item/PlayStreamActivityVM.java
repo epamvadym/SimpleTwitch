@@ -14,6 +14,8 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsManifest;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -42,6 +44,7 @@ public class PlayStreamActivityVM extends ActivityViewModel {
     private SimpleExoPlayer player;
     private DataSource.Factory dataSourceFactory;
     private DefaultTrackSelector trackSelector;
+    private boolean qualitiesAdded;
 
     private ExoPlayer.DefaultEventListener exoPlayerEventListener = new Player.DefaultEventListener() {
         @Override
@@ -53,16 +56,17 @@ public class PlayStreamActivityVM extends ActivityViewModel {
         public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
             // todo find out the optimal way how to get quality list
             HlsManifest manifest = (HlsManifest) player.getCurrentManifest();
-            if (manifest != null) {
+            if (!qualitiesAdded && manifest != null) {
                 Pattern pattern = Pattern.compile("NAME=\"(.+?)\"");
                 List<String> qualities = new ArrayList<>();
                 for (String tag : manifest.masterPlaylist.tags) {
                     Matcher matcher = pattern.matcher(tag);
                     if (matcher.find() && matcher.groupCount() == 1) {
-                        qualities.add( matcher.group(1));
+                        qualities.add(matcher.group(1));
                     }
                 }
                 qualitiesLiveData.setValue(qualities);
+                qualitiesAdded = true;
             }
         }
     };
@@ -114,7 +118,17 @@ public class PlayStreamActivityVM extends ActivityViewModel {
     }
 
     private void preparePlayer(Uri playListUri) {
-        player.prepare(new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(playListUri));
+        HlsMediaSource hlsMediaSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(playListUri);
+        player.prepare(hlsMediaSource);
+    }
+
+    public void qualitySelected(int position) {
+        MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+        TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(0);
+        MappingTrackSelector.SelectionOverride override = trackSelector.getSelectionOverride(0, trackGroups);
+
+        override = new MappingTrackSelector.SelectionOverride(new FixedTrackSelection.Factory(), 0, position);
+        trackSelector.setSelectionOverride(0, trackGroups, override);
     }
 
     @Override
@@ -127,9 +141,5 @@ public class PlayStreamActivityVM extends ActivityViewModel {
         super.onCleared();
         player.release();
         player = null;
-    }
-
-    public void qualityItemSelected(int position) {
-        // todo select stream quality
     }
 }

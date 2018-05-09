@@ -2,6 +2,8 @@ package com.vadym_horiainov.simpletwitch.di;
 
 import com.vadym_horiainov.simpletwitch.BuildConfig;
 import com.vadym_horiainov.simpletwitch.data.api.StreamApi;
+import com.vadym_horiainov.simpletwitch.data.api.UserApi;
+import com.vadym_horiainov.simpletwitch.di.annotations.ApiUrl;
 
 import javax.inject.Singleton;
 
@@ -24,7 +26,13 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    public Retrofit provideRetrofit(String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
+    public UserApi provideUserApi(Retrofit retrofit) {
+        return retrofit.create(UserApi.class);
+    }
+
+    @Singleton
+    @Provides
+    public Retrofit provideRetrofit(@ApiUrl String baseUrl, Converter.Factory converterFactory, CallAdapter.Factory callAdapterFactory) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
@@ -46,6 +54,7 @@ public class NetworkModule {
 
     @Singleton
     @Provides
+    @ApiUrl
     public String provideApiUrl() {
         return BuildConfig.API_URL;
     }

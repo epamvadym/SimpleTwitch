@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:use_controller="false" />
+            app:use_controller="false"/>
+            <!--app:resize_mode="fill"-->
 
         <TextView
             android:id="@+id/debug_text_view"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="4dp"
-            android:onItemSelected="@{(parent, view, position, id) -> viewModel.qualityItemSelected(position)}"
+            android:onItemSelected="@{(parent, view, position, id) -> viewModel.qualitySelected(position)}"
             android:popupBackground="@android:color/transparent"
             tools:listitem="@layout/spinner_quality_item" />
 
